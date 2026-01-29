@@ -1,1 +1,1211 @@
-<!-- File renamed from 'index 2.html' to 'index.html' -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1a1a2e">
+<title>French Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d0d1a;--card:#161625;--el:#1e1e32;--text:#fff;--dim:#8888aa;--accent:#6c5ce7;--lt:#a29bfe;--ok:#00b894;--err:#ff6b6b;--r:16px}
+body{font-family:Outfit,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-around;padding:8px 0 20px;z-index:100}
+.nav-btn{background:0;border:0;color:var(--dim);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;cursor:pointer}
+.nav-btn.active{color:var(--lt)}
+.nav-btn svg{width:22px;height:22px}
+.main{padding:20px;max-width:600px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.title{font-size:26px;font-weight:700}
+.subtitle{color:var(--dim);font-size:14px;margin-top:4px}
+.badge{background:var(--accent);padding:8px 16px;border-radius:20px;font-weight:600}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.stat-box{background:var(--card);border-radius:var(--r);padding:16px;text-align:center}
+.stat-value{font-size:22px;font-weight:700;color:var(--lt)}
+.stat-label{font-size:11px;color:var(--dim);margin-top:4px}
+.section-title{font-size:16px;font-weight:600;margin-bottom:14px;color:var(--dim)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:28px}
+.card{background:var(--card);border-radius:var(--r);padding:18px;cursor:pointer;border:1px solid transparent;transition:.2s}
+.card:hover{background:var(--el);border-color:var(--accent)}
+.card-icon{font-size:28px;margin-bottom:10px}
+.card-title{font-weight:600;margin-bottom:4px}
+.card-count{font-size:12px;color:var(--dim)}
+.list{display:flex;flex-direction:column;gap:8px}
+.list-item{background:var(--card);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.list-item:hover{background:var(--el)}
+.list-item-title{font-weight:500}
+.list-item-sub{font-size:13px;color:var(--dim)}
+.tag{background:var(--accent);padding:4px 10px;border-radius:12px;font-size:11px}
+.tag-er{background:#00b894}.tag-ir{background:#0984e3}.tag-re{background:#e17055}.tag-irregular{background:#e84393}
+.search{width:100%;background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 16px;color:var(--text);font-size:15px;margin-bottom:16px;outline:0}
+.search:focus{border-color:var(--accent)}
+.search::placeholder{color:var(--dim)}
+.filters{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:8px}
+.filter{background:var(--card);border:0;color:var(--dim);padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer;white-space:nowrap}
+.filter.active{background:var(--accent);color:#fff}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;opacity:0;visibility:hidden;transition:.2s}
+.modal-bg.open{opacity:1;visibility:visible}
+.modal{background:var(--card);border-radius:var(--r);width:100%;max-width:500px;max-height:85vh;overflow:hidden}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;padding:20px;border-bottom:1px solid rgba(255,255,255,.05)}
+.modal-title{font-size:20px;font-weight:600}
+.modal-sub{color:var(--dim);font-size:14px;margin-top:4px}
+.modal-close{background:rgba(255,255,255,.1);border:0;color:var(--text);width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer}
+.modal-body{padding:20px;overflow-y:auto;max-height:calc(85vh - 80px)}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{background:var(--el);border:0;color:var(--dim);padding:10px 14px;border-radius:10px;font-size:13px;cursor:pointer}
+.tab.active{background:var(--accent);color:#fff}
+.conj-table{width:100%;border-collapse:collapse}
+.conj-table tr{border-bottom:1px solid rgba(255,255,255,.05)}
+.conj-table td{padding:12px 0}
+.conj-table .pronoun{color:var(--dim);width:90px}
+.conj-table .form{color:var(--lt);font-weight:500}
+.quiz-progress{height:4px;background:var(--el);border-radius:2px;margin-bottom:24px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:var(--accent);transition:.3s}
+.quiz-question{font-size:18px;font-weight:500;text-align:center;margin-bottom:24px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-option{background:var(--el);border:2px solid transparent;color:var(--text);padding:14px 16px;border-radius:10px;font-size:15px;cursor:pointer;text-align:left}
+.quiz-option:hover{border-color:var(--accent)}
+.quiz-option.correct{background:var(--ok);border-color:var(--ok)}
+.quiz-option.wrong{background:var(--err);border-color:var(--err)}
+.quiz-result{text-align:center;padding:20px}
+.quiz-score{font-size:56px;font-weight:700;color:var(--lt)}
+.btn{background:var(--accent);border:0;color:#fff;padding:14px 24px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;width:100%}
+.btn-outline{background:0;border:1px solid var(--accent);color:var(--lt)}
+.btn-sm{padding:10px 16px;font-size:13px;width:auto}
+.word-card{background:var(--el);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.word-french{font-weight:500}
+.word-english{color:var(--dim);font-size:14px;margin-top:2px}
+.word-phonetic{color:var(--lt);font-size:12px;margin-top:4px}
+.speak-btn{background:var(--card);border:0;color:var(--dim);width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer}
+.flashcard-container{perspective:1000px;height:220px;margin-bottom:20px}
+.flashcard{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:.5s;cursor:pointer}
+.flashcard.flipped{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;background:var(--el);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.flashcard-back{transform:rotateY(180deg)}
+.flashcard-word{font-size:26px;font-weight:600;text-align:center}
+.flashcard-hint{color:var(--dim);margin-top:12px}
+.flashcard-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grammar-card{background:var(--card);border-radius:var(--r);padding:20px;margin-bottom:16px;border-left:4px solid var(--accent)}
+.grammar-card h3{color:var(--lt);margin-bottom:12px;font-size:16px}
+.grammar-card p{color:var(--dim);font-size:14px;line-height:1.6;margin-bottom:12px}
+.grammar-example{background:var(--el);border-radius:10px;padding:12px 16px;margin:10px 0}
+.grammar-french{font-weight:500;margin-bottom:4px}
+.grammar-english{color:var(--dim);font-size:13px}
+.grammar-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+.grammar-table th{background:var(--el);padding:10px;text-align:left;color:var(--lt)}
+.grammar-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.grammar-note{background:rgba(108,92,231,.1);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:13px;color:var(--lt)}
+.stats-detail{background:var(--card);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.stats-detail h3{color:var(--lt);margin-bottom:16px;font-size:16px}
+.stats-bar{height:8px;background:var(--el);border-radius:4px;margin:8px 0;overflow:hidden}
+.stats-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--lt));border-radius:4px;transition:.3s}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.stats-item{background:var(--el);border-radius:10px;padding:12px;text-align:center}
+.stats-item-value{font-size:20px;font-weight:700;color:var(--lt)}
+.stats-item-label{font-size:11px;color:var(--dim);margin-top:4px}
+.level-badge{display:inline-block;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;margin-left:8px}
+.level-a1{background:#00b894;color:#fff}
+.level-a2{background:#00cec9;color:#fff}
+.level-b1{background:#0984e3;color:#fff}
+.level-b2{background:#6c5ce7;color:#fff}
+.practice-section{margin-bottom:24px}
+.practice-label{font-size:14px;color:var(--dim);margin-bottom:10px;display:block}
+.practice-options{display:flex;flex-wrap:wrap;gap:8px}
+.practice-option{background:var(--el);border:2px solid transparent;color:var(--text);padding:10px 16px;border-radius:10px;font-size:14px;cursor:pointer;transition:.2s}
+.practice-option:hover{border-color:var(--accent)}
+.practice-option.selected{background:var(--accent);border-color:var(--accent)}
+.practice-option.disabled{opacity:0.5;cursor:not-allowed}
+.mastery-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.mastery-0{background:#ff6b6b}
+.mastery-1{background:#feca57}
+.mastery-2{background:#48dbfb}
+.mastery-3{background:#1dd1a1}
+.mastery-bar{display:flex;gap:2px;margin-top:4px}
+.mastery-bar span{height:4px;flex:1;border-radius:2px;background:var(--el)}
+.mastery-bar span.filled{background:var(--ok)}
+.skill-card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.skill-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.skill-name{font-weight:500}
+.skill-level{font-size:12px;color:var(--lt)}
+.skill-progress{height:6px;background:var(--el);border-radius:3px;overflow:hidden}
+.skill-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--ok));transition:.3s}
+.mode-card{background:var(--el);border-radius:var(--r);padding:16px;margin-bottom:12px;cursor:pointer;border:2px solid transparent}
+.mode-card:hover{border-color:var(--accent)}
+.mode-card.selected{border-color:var(--accent);background:rgba(108,92,231,0.1)}
+.mode-icon{font-size:24px;margin-bottom:8px}
+.mode-title{font-weight:600;margin-bottom:4px}
+.mode-desc{font-size:12px;color:var(--dim)}
+</style>
+</head>
+<body>
+<nav class="nav">
+<button class="nav-btn active" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</button>
+<button class="nav-btn" data-view="verbs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Verbs</button>
+<button class="nav-btn" data-view="vocab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Vocab</button>
+<button class="nav-btn" data-view="grammar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8"/></svg>Grammar</button>
+<button class="nav-btn" data-view="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>Stats</button>
+</nav>
+<div id="app" class="main"></div>
+<div id="modal" class="modal-bg"></div>
+<script>
+// VERBS DATA - Expanded
+var VERBS = [
+// IRREGULAR VERBS (30)
+{verb:"être",translation:"to be",group:"irregular",present:{je:"suis",tu:"es",il:"est",nous:"sommes",vous:"êtes",ils:"sont"},passe:{je:"ai été",tu:"as été",il:"a été",nous:"avons été",vous:"avez été",ils:"ont été"},imparfait:{je:"étais",tu:"étais",il:"était",nous:"étions",vous:"étiez",ils:"étaient"},futur:{je:"serai",tu:"seras",il:"sera",nous:"serons",vous:"serez",ils:"seront"}},
+{verb:"avoir",translation:"to have",group:"irregular",present:{je:"ai",tu:"as",il:"a",nous:"avons",vous:"avez",ils:"ont"},passe:{je:"ai eu",tu:"as eu",il:"a eu",nous:"avons eu",vous:"avez eu",ils:"ont eu"},imparfait:{je:"avais",tu:"avais",il:"avait",nous:"avions",vous:"aviez",ils:"avaient"},futur:{je:"aurai",tu:"auras",il:"aura",nous:"aurons",vous:"aurez",ils:"auront"}},
+{verb:"aller",translation:"to go",group:"irregular",present:{je:"vais",tu:"vas",il:"va",nous:"allons",vous:"allez",ils:"vont"},passe:{je:"suis allé",tu:"es allé",il:"est allé",nous:"sommes allés",vous:"êtes allés",ils:"sont allés"},imparfait:{je:"allais",tu:"allais",il:"allait",nous:"allions",vous:"alliez",ils:"allaient"},futur:{je:"irai",tu:"iras",il:"ira",nous:"irons",vous:"irez",ils:"iront"}},
+{verb:"faire",translation:"to do/make",group:"irregular",present:{je:"fais",tu:"fais",il:"fait",nous:"faisons",vous:"faites",ils:"font"},passe:{je:"ai fait",tu:"as fait",il:"a fait",nous:"avons fait",vous:"avez fait",ils:"ont fait"},imparfait:{je:"faisais",tu:"faisais",il:"faisait",nous:"faisions",vous:"faisiez",ils:"faisaient"},futur:{je:"ferai",tu:"feras",il:"fera",nous:"ferons",vous:"ferez",ils:"feront"}},
+{verb:"dire",translation:"to say",group:"irregular",present:{je:"dis",tu:"dis",il:"dit",nous:"disons",vous:"dites",ils:"disent"},passe:{je:"ai dit",tu:"as dit",il:"a dit",nous:"avons dit",vous:"avez dit",ils:"ont dit"},imparfait:{je:"disais",tu:"disais",il:"disait",nous:"disions",vous:"disiez",ils:"disaient"},futur:{je:"dirai",tu:"diras",il:"dira",nous:"dirons",vous:"direz",ils:"diront"}},
+{verb:"pouvoir",translation:"can/to be able",group:"irregular",present:{je:"peux",tu:"peux",il:"peut",nous:"pouvons",vous:"pouvez",ils:"peuvent"},passe:{je:"ai pu",tu:"as pu",il:"a pu",nous:"avons pu",vous:"avez pu",ils:"ont pu"},imparfait:{je:"pouvais",tu:"pouvais",il:"pouvait",nous:"pouvions",vous:"pouviez",ils:"pouvaient"},futur:{je:"pourrai",tu:"pourras",il:"pourra",nous:"pourrons",vous:"pourrez",ils:"pourront"}},
+{verb:"vouloir",translation:"to want",group:"irregular",present:{je:"veux",tu:"veux",il:"veut",nous:"voulons",vous:"voulez",ils:"veulent"},passe:{je:"ai voulu",tu:"as voulu",il:"a voulu",nous:"avons voulu",vous:"avez voulu",ils:"ont voulu"},imparfait:{je:"voulais",tu:"voulais",il:"voulait",nous:"voulions",vous:"vouliez",ils:"voulaient"},futur:{je:"voudrai",tu:"voudras",il:"voudra",nous:"voudrons",vous:"voudrez",ils:"voudront"}},
+{verb:"savoir",translation:"to know",group:"irregular",present:{je:"sais",tu:"sais",il:"sait",nous:"savons",vous:"savez",ils:"savent"},passe:{je:"ai su",tu:"as su",il:"a su",nous:"avons su",vous:"avez su",ils:"ont su"},imparfait:{je:"savais",tu:"savais",il:"savait",nous:"savions",vous:"saviez",ils:"savaient"},futur:{je:"saurai",tu:"sauras",il:"saura",nous:"saurons",vous:"saurez",ils:"sauront"}},
+{verb:"voir",translation:"to see",group:"irregular",present:{je:"vois",tu:"vois",il:"voit",nous:"voyons",vous:"voyez",ils:"voient"},passe:{je:"ai vu",tu:"as vu",il:"a vu",nous:"avons vu",vous:"avez vu",ils:"ont vu"},imparfait:{je:"voyais",tu:"voyais",il:"voyait",nous:"voyions",vous:"voyiez",ils:"voyaient"},futur:{je:"verrai",tu:"verras",il:"verra",nous:"verrons",vous:"verrez",ils:"verront"}},
+{verb:"venir",translation:"to come",group:"irregular",present:{je:"viens",tu:"viens",il:"vient",nous:"venons",vous:"venez",ils:"viennent"},passe:{je:"suis venu",tu:"es venu",il:"est venu",nous:"sommes venus",vous:"êtes venus",ils:"sont venus"},imparfait:{je:"venais",tu:"venais",il:"venait",nous:"venions",vous:"veniez",ils:"venaient"},futur:{je:"viendrai",tu:"viendras",il:"viendra",nous:"viendrons",vous:"viendrez",ils:"viendront"}},
+{verb:"prendre",translation:"to take",group:"irregular",present:{je:"prends",tu:"prends",il:"prend",nous:"prenons",vous:"prenez",ils:"prennent"},passe:{je:"ai pris",tu:"as pris",il:"a pris",nous:"avons pris",vous:"avez pris",ils:"ont pris"},imparfait:{je:"prenais",tu:"prenais",il:"prenait",nous:"prenions",vous:"preniez",ils:"prenaient"},futur:{je:"prendrai",tu:"prendras",il:"prendra",nous:"prendrons",vous:"prendrez",ils:"prendront"}},
+{verb:"devoir",translation:"must/have to",group:"irregular",present:{je:"dois",tu:"dois",il:"doit",nous:"devons",vous:"devez",ils:"doivent"},passe:{je:"ai dû",tu:"as dû",il:"a dû",nous:"avons dû",vous:"avez dû",ils:"ont dû"},imparfait:{je:"devais",tu:"devais",il:"devait",nous:"devions",vous:"deviez",ils:"devaient"},futur:{je:"devrai",tu:"devras",il:"devra",nous:"devrons",vous:"devrez",ils:"devront"}},
+{verb:"mettre",translation:"to put",group:"irregular",present:{je:"mets",tu:"mets",il:"met",nous:"mettons",vous:"mettez",ils:"mettent"},passe:{je:"ai mis",tu:"as mis",il:"a mis",nous:"avons mis",vous:"avez mis",ils:"ont mis"},imparfait:{je:"mettais",tu:"mettais",il:"mettait",nous:"mettions",vous:"mettiez",ils:"mettaient"},futur:{je:"mettrai",tu:"mettras",il:"mettra",nous:"mettrons",vous:"mettrez",ils:"mettront"}},
+{verb:"croire",translation:"to believe",group:"irregular",present:{je:"crois",tu:"crois",il:"croit",nous:"croyons",vous:"croyez",ils:"croient"},passe:{je:"ai cru",tu:"as cru",il:"a cru",nous:"avons cru",vous:"avez cru",ils:"ont cru"},imparfait:{je:"croyais",tu:"croyais",il:"croyait",nous:"croyions",vous:"croyiez",ils:"croyaient"},futur:{je:"croirai",tu:"croiras",il:"croira",nous:"croirons",vous:"croirez",ils:"croiront"}},
+{verb:"écrire",translation:"to write",group:"irregular",present:{je:"écris",tu:"écris",il:"écrit",nous:"écrivons",vous:"écrivez",ils:"écrivent"},passe:{je:"ai écrit",tu:"as écrit",il:"a écrit",nous:"avons écrit",vous:"avez écrit",ils:"ont écrit"},imparfait:{je:"écrivais",tu:"écrivais",il:"écrivait",nous:"écrivions",vous:"écriviez",ils:"écrivaient"},futur:{je:"écrirai",tu:"écriras",il:"écrira",nous:"écrirons",vous:"écrirez",ils:"écriront"}},
+{verb:"lire",translation:"to read",group:"irregular",present:{je:"lis",tu:"lis",il:"lit",nous:"lisons",vous:"lisez",ils:"lisent"},passe:{je:"ai lu",tu:"as lu",il:"a lu",nous:"avons lu",vous:"avez lu",ils:"ont lu"},imparfait:{je:"lisais",tu:"lisais",il:"lisait",nous:"lisions",vous:"lisiez",ils:"lisaient"},futur:{je:"lirai",tu:"liras",il:"lira",nous:"lirons",vous:"lirez",ils:"liront"}},
+{verb:"boire",translation:"to drink",group:"irregular",present:{je:"bois",tu:"bois",il:"boit",nous:"buvons",vous:"buvez",ils:"boivent"},passe:{je:"ai bu",tu:"as bu",il:"a bu",nous:"avons bu",vous:"avez bu",ils:"ont bu"},imparfait:{je:"buvais",tu:"buvais",il:"buvait",nous:"buvions",vous:"buviez",ils:"buvaient"},futur:{je:"boirai",tu:"boiras",il:"boira",nous:"boirons",vous:"boirez",ils:"boiront"}},
+{verb:"connaître",translation:"to know (people)",group:"irregular",present:{je:"connais",tu:"connais",il:"connaît",nous:"connaissons",vous:"connaissez",ils:"connaissent"},passe:{je:"ai connu",tu:"as connu",il:"a connu",nous:"avons connu",vous:"avez connu",ils:"ont connu"},imparfait:{je:"connaissais",tu:"connaissais",il:"connaissait",nous:"connaissions",vous:"connaissiez",ils:"connaissaient"},futur:{je:"connaîtrai",tu:"connaîtras",il:"connaîtra",nous:"connaîtrons",vous:"connaîtrez",ils:"connaîtront"}},
+{verb:"vivre",translation:"to live",group:"irregular",present:{je:"vis",tu:"vis",il:"vit",nous:"vivons",vous:"vivez",ils:"vivent"},passe:{je:"ai vécu",tu:"as vécu",il:"a vécu",nous:"avons vécu",vous:"avez vécu",ils:"ont vécu"},imparfait:{je:"vivais",tu:"vivais",il:"vivait",nous:"vivions",vous:"viviez",ils:"vivaient"},futur:{je:"vivrai",tu:"vivras",il:"vivra",nous:"vivrons",vous:"vivrez",ils:"vivront"}},
+{verb:"ouvrir",translation:"to open",group:"irregular",present:{je:"ouvre",tu:"ouvres",il:"ouvre",nous:"ouvrons",vous:"ouvrez",ils:"ouvrent"},passe:{je:"ai ouvert",tu:"as ouvert",il:"a ouvert",nous:"avons ouvert",vous:"avez ouvert",ils:"ont ouvert"},imparfait:{je:"ouvrais",tu:"ouvrais",il:"ouvrait",nous:"ouvrions",vous:"ouvriez",ils:"ouvraient"},futur:{je:"ouvrirai",tu:"ouvriras",il:"ouvrira",nous:"ouvrirons",vous:"ouvrirez",ils:"ouvriront"}},
+{verb:"recevoir",translation:"to receive",group:"irregular",present:{je:"reçois",tu:"reçois",il:"reçoit",nous:"recevons",vous:"recevez",ils:"reçoivent"},passe:{je:"ai reçu",tu:"as reçu",il:"a reçu",nous:"avons reçu",vous:"avez reçu",ils:"ont reçu"},imparfait:{je:"recevais",tu:"recevais",il:"recevait",nous:"recevions",vous:"receviez",ils:"recevaient"},futur:{je:"recevrai",tu:"recevras",il:"recevra",nous:"recevrons",vous:"recevrez",ils:"recevront"}},
+{verb:"tenir",translation:"to hold",group:"irregular",present:{je:"tiens",tu:"tiens",il:"tient",nous:"tenons",vous:"tenez",ils:"tiennent"},passe:{je:"ai tenu",tu:"as tenu",il:"a tenu",nous:"avons tenu",vous:"avez tenu",ils:"ont tenu"},imparfait:{je:"tenais",tu:"tenais",il:"tenait",nous:"tenions",vous:"teniez",ils:"tenaient"},futur:{je:"tiendrai",tu:"tiendras",il:"tiendra",nous:"tiendrons",vous:"tiendrez",ils:"tiendront"}},
+{verb:"mourir",translation:"to die",group:"irregular",present:{je:"meurs",tu:"meurs",il:"meurt",nous:"mourons",vous:"mourez",ils:"meurent"},passe:{je:"suis mort",tu:"es mort",il:"est mort",nous:"sommes morts",vous:"êtes morts",ils:"sont morts"},imparfait:{je:"mourais",tu:"mourais",il:"mourait",nous:"mourions",vous:"mouriez",ils:"mouraient"},futur:{je:"mourrai",tu:"mourras",il:"mourra",nous:"mourrons",vous:"mourrez",ils:"mourront"}},
+{verb:"naître",translation:"to be born",group:"irregular",present:{je:"nais",tu:"nais",il:"naît",nous:"naissons",vous:"naissez",ils:"naissent"},passe:{je:"suis né",tu:"es né",il:"est né",nous:"sommes nés",vous:"êtes nés",ils:"sont nés"},imparfait:{je:"naissais",tu:"naissais",il:"naissait",nous:"naissions",vous:"naissiez",ils:"naissaient"},futur:{je:"naîtrai",tu:"naîtras",il:"naîtra",nous:"naîtrons",vous:"naîtrez",ils:"naîtront"}},
+{verb:"conduire",translation:"to drive",group:"irregular",present:{je:"conduis",tu:"conduis",il:"conduit",nous:"conduisons",vous:"conduisez",ils:"conduisent"},passe:{je:"ai conduit",tu:"as conduit",il:"a conduit",nous:"avons conduit",vous:"avez conduit",ils:"ont conduit"},imparfait:{je:"conduisais",tu:"conduisais",il:"conduisait",nous:"conduisions",vous:"conduisiez",ils:"conduisaient"},futur:{je:"conduirai",tu:"conduiras",il:"conduira",nous:"conduirons",vous:"conduirez",ils:"conduiront"}},
+{verb:"suivre",translation:"to follow",group:"irregular",present:{je:"suis",tu:"suis",il:"suit",nous:"suivons",vous:"suivez",ils:"suivent"},passe:{je:"ai suivi",tu:"as suivi",il:"a suivi",nous:"avons suivi",vous:"avez suivi",ils:"ont suivi"},imparfait:{je:"suivais",tu:"suivais",il:"suivait",nous:"suivions",vous:"suiviez",ils:"suivaient"},futur:{je:"suivrai",tu:"suivras",il:"suivra",nous:"suivrons",vous:"suivrez",ils:"suivront"}},
+{verb:"plaire",translation:"to please",group:"irregular",present:{je:"plais",tu:"plais",il:"plaît",nous:"plaisons",vous:"plaisez",ils:"plaisent"},passe:{je:"ai plu",tu:"as plu",il:"a plu",nous:"avons plu",vous:"avez plu",ils:"ont plu"},imparfait:{je:"plaisais",tu:"plaisais",il:"plaisait",nous:"plaisions",vous:"plaisiez",ils:"plaisaient"},futur:{je:"plairai",tu:"plairas",il:"plaira",nous:"plairons",vous:"plairez",ils:"plairont"}},
+{verb:"rire",translation:"to laugh",group:"irregular",present:{je:"ris",tu:"ris",il:"rit",nous:"rions",vous:"riez",ils:"rient"},passe:{je:"ai ri",tu:"as ri",il:"a ri",nous:"avons ri",vous:"avez ri",ils:"ont ri"},imparfait:{je:"riais",tu:"riais",il:"riait",nous:"riions",vous:"riiez",ils:"riaient"},futur:{je:"rirai",tu:"riras",il:"rira",nous:"rirons",vous:"rirez",ils:"riront"}},
+{verb:"dormir",translation:"to sleep",group:"ir",present:{je:"dors",tu:"dors",il:"dort",nous:"dormons",vous:"dormez",ils:"dorment"},passe:{je:"ai dormi",tu:"as dormi",il:"a dormi",nous:"avons dormi",vous:"avez dormi",ils:"ont dormi"},imparfait:{je:"dormais",tu:"dormais",il:"dormait",nous:"dormions",vous:"dormiez",ils:"dormaient"},futur:{je:"dormirai",tu:"dormiras",il:"dormira",nous:"dormirons",vous:"dormirez",ils:"dormiront"}},
+{verb:"partir",translation:"to leave",group:"ir",present:{je:"pars",tu:"pars",il:"part",nous:"partons",vous:"partez",ils:"partent"},passe:{je:"suis parti",tu:"es parti",il:"est parti",nous:"sommes partis",vous:"êtes partis",ils:"sont partis"},imparfait:{je:"partais",tu:"partais",il:"partait",nous:"partions",vous:"partiez",ils:"partaient"},futur:{je:"partirai",tu:"partiras",il:"partira",nous:"partirons",vous:"partirez",ils:"partiront"}},
+{verb:"sortir",translation:"to go out",group:"ir",present:{je:"sors",tu:"sors",il:"sort",nous:"sortons",vous:"sortez",ils:"sortent"},passe:{je:"suis sorti",tu:"es sorti",il:"est sorti",nous:"sommes sortis",vous:"êtes sortis",ils:"sont sortis"},imparfait:{je:"sortais",tu:"sortais",il:"sortait",nous:"sortions",vous:"sortiez",ils:"sortaient"},futur:{je:"sortirai",tu:"sortiras",il:"sortira",nous:"sortirons",vous:"sortirez",ils:"sortiront"}},
+{verb:"courir",translation:"to run",group:"ir",present:{je:"cours",tu:"cours",il:"court",nous:"courons",vous:"courez",ils:"courent"},passe:{je:"ai couru",tu:"as couru",il:"a couru",nous:"avons couru",vous:"avez couru",ils:"ont couru"},imparfait:{je:"courais",tu:"courais",il:"courait",nous:"courions",vous:"couriez",ils:"couraient"},futur:{je:"courrai",tu:"courras",il:"courra",nous:"courrons",vous:"courrez",ils:"courront"}}
+];
+// Generate ER verbs (50)
+var erVerbs=[["parler","to speak"],["manger","to eat"],["regarder","to watch"],["écouter","to listen"],["travailler","to work"],["habiter","to live"],["aimer","to love"],["chercher","to search"],["trouver","to find"],["donner","to give"],["demander","to ask"],["penser","to think"],["rester","to stay"],["arriver","to arrive"],["jouer","to play"],["chanter","to sing"],["danser","to dance"],["marcher","to walk"],["acheter","to buy"],["porter","to carry"],["montrer","to show"],["étudier","to study"],["commencer","to begin"],["terminer","to finish"],["oublier","to forget"],["fermer","to close"],["entrer","to enter"],["préparer","to prepare"],["utiliser","to use"],["créer","to create"],["gagner","to win"],["laver","to wash"],["voyager","to travel"],["nager","to swim"],["tomber","to fall"],["monter","to climb"],["aider","to help"],["appeler","to call"],["payer","to pay"],["essayer","to try"],["expliquer","to explain"],["raconter","to tell"],["présenter","to present"],["accepter","to accept"],["refuser","to refuse"],["continuer","to continue"],["améliorer","to improve"],["développer","to develop"],["organiser","to organize"],["participer","to participate"]];
+erVerbs.forEach(function(v){var s=v[0].slice(0,-2),pp=s+"é";VERBS.push({verb:v[0],translation:v[1],group:"er",present:{je:s+"e",tu:s+"es",il:s+"e",nous:s+"ons",vous:s+"ez",ils:s+"ent"},passe:{je:"ai "+pp,tu:"as "+pp,il:"a "+pp,nous:"avons "+pp,vous:"avez "+pp,ils:"ont "+pp},imparfait:{je:s+"ais",tu:s+"ais",il:s+"ait",nous:s+"ions",vous:s+"iez",ils:s+"aient"},futur:{je:v[0]+"ai",tu:v[0]+"as",il:v[0]+"a",nous:v[0]+"ons",vous:v[0]+"ez",ils:v[0]+"ont"}});});
+// Generate IR verbs (25)
+var irVerbs=[["finir","to finish"],["choisir","to choose"],["réussir","to succeed"],["grandir","to grow"],["remplir","to fill"],["réfléchir","to reflect"],["obéir","to obey"],["punir","to punish"],["guérir","to heal"],["nourrir","to feed"],["établir","to establish"],["agir","to act"],["applaudir","to applaud"],["définir","to define"],["fournir","to provide"],["garantir","to guarantee"],["investir","to invest"],["maigrir","to lose weight"],["grossir","to gain weight"],["rougir","to blush"],["vieillir","to age"],["réunir","to gather"],["accomplir","to accomplish"],["avertir","to warn"],["bâtir","to build"]];
+irVerbs.forEach(function(v){var s=v[0].slice(0,-2),pp=s+"i";VERBS.push({verb:v[0],translation:v[1],group:"ir",present:{je:s+"is",tu:s+"is",il:s+"it",nous:s+"issons",vous:s+"issez",ils:s+"issent"},passe:{je:"ai "+pp,tu:"as "+pp,il:"a "+pp,nous:"avons "+pp,vous:"avez "+pp,ils:"ont "+pp},imparfait:{je:s+"issais",tu:s+"issais",il:s+"issait",nous:s+"issions",vous:s+"issiez",ils:s+"issaient"},futur:{je:v[0]+"ai",tu:v[0]+"as",il:v[0]+"a",nous:v[0]+"ons",vous:v[0]+"ez",ils:v[0]+"ont"}});});
+// Generate RE verbs (15)
+var reVerbs=[["vendre","to sell"],["attendre","to wait"],["entendre","to hear"],["perdre","to lose"],["répondre","to answer"],["descendre","to descend"],["rendre","to return"],["défendre","to defend"],["confondre","to confuse"],["dépendre","to depend"],["étendre","to extend"],["fondre","to melt"],["mordre","to bite"],["pendre","to hang"],["tendre","to stretch"]];
+reVerbs.forEach(function(v){var s=v[0].slice(0,-2),pp=s+"u";VERBS.push({verb:v[0],translation:v[1],group:"re",present:{je:s+"s",tu:s+"s",il:s,nous:s+"ons",vous:s+"ez",ils:s+"ent"},passe:{je:"ai "+pp,tu:"as "+pp,il:"a "+pp,nous:"avons "+pp,vous:"avez "+pp,ils:"ont "+pp},imparfait:{je:s+"ais",tu:s+"ais",il:s+"ait",nous:s+"ions",vous:s+"iez",ils:s+"aient"},futur:{je:v[0].slice(0,-1)+"ai",tu:v[0].slice(0,-1)+"as",il:v[0].slice(0,-1)+"a",nous:v[0].slice(0,-1)+"ons",vous:v[0].slice(0,-1)+"ez",ils:v[0].slice(0,-1)+"ont"}});});
+// VOCABULARY - EXPANDED (500+ words)
+var VOCAB={
+greetings:{name:"Greetings & Basics",icon:"👋",words:[
+{fr:"bonjour",en:"hello/good morning"},{fr:"bonsoir",en:"good evening"},{fr:"bonne nuit",en:"good night"},{fr:"salut",en:"hi/bye"},{fr:"au revoir",en:"goodbye"},{fr:"à bientôt",en:"see you soon"},{fr:"à demain",en:"see you tomorrow"},{fr:"à plus tard",en:"see you later"},{fr:"merci",en:"thank you"},{fr:"merci beaucoup",en:"thank you very much"},{fr:"de rien",en:"you're welcome"},{fr:"je vous en prie",en:"you're welcome (formal)"},{fr:"s'il vous plaît",en:"please (formal)"},{fr:"s'il te plaît",en:"please (informal)"},{fr:"excusez-moi",en:"excuse me"},{fr:"pardon",en:"sorry"},{fr:"désolé",en:"sorry"},{fr:"oui",en:"yes"},{fr:"non",en:"no"},{fr:"peut-être",en:"maybe"},{fr:"d'accord",en:"okay"},{fr:"bien sûr",en:"of course"},{fr:"comment allez-vous?",en:"how are you? (formal)"},{fr:"comment vas-tu?",en:"how are you? (informal)"},{fr:"ça va?",en:"how's it going?"},{fr:"très bien",en:"very well"},{fr:"pas mal",en:"not bad"},{fr:"comme ci comme ça",en:"so-so"},{fr:"enchanté",en:"nice to meet you"},{fr:"bienvenue",en:"welcome"},{fr:"bonne journée",en:"have a good day"},{fr:"bonne soirée",en:"have a good evening"},{fr:"bon weekend",en:"have a good weekend"},{fr:"félicitations",en:"congratulations"},{fr:"bonne chance",en:"good luck"},{fr:"bon courage",en:"good luck/hang in there"},{fr:"santé",en:"cheers"},{fr:"bon appétit",en:"enjoy your meal"},{fr:"à vos souhaits",en:"bless you"},{fr:"je t'aime",en:"I love you"}
+]},
+numbers:{name:"Numbers & Math",icon:"🔢",words:[
+{fr:"zéro",en:"zero"},{fr:"un",en:"one"},{fr:"deux",en:"two"},{fr:"trois",en:"three"},{fr:"quatre",en:"four"},{fr:"cinq",en:"five"},{fr:"six",en:"six"},{fr:"sept",en:"seven"},{fr:"huit",en:"eight"},{fr:"neuf",en:"nine"},{fr:"dix",en:"ten"},{fr:"onze",en:"eleven"},{fr:"douze",en:"twelve"},{fr:"treize",en:"thirteen"},{fr:"quatorze",en:"fourteen"},{fr:"quinze",en:"fifteen"},{fr:"seize",en:"sixteen"},{fr:"dix-sept",en:"seventeen"},{fr:"dix-huit",en:"eighteen"},{fr:"dix-neuf",en:"nineteen"},{fr:"vingt",en:"twenty"},{fr:"vingt et un",en:"twenty-one"},{fr:"trente",en:"thirty"},{fr:"quarante",en:"forty"},{fr:"cinquante",en:"fifty"},{fr:"soixante",en:"sixty"},{fr:"soixante-dix",en:"seventy"},{fr:"quatre-vingts",en:"eighty"},{fr:"quatre-vingt-dix",en:"ninety"},{fr:"cent",en:"hundred"},{fr:"deux cents",en:"two hundred"},{fr:"mille",en:"thousand"},{fr:"un million",en:"million"},{fr:"premier",en:"first"},{fr:"deuxième",en:"second"},{fr:"troisième",en:"third"},{fr:"dernier",en:"last"},{fr:"la moitié",en:"half"},{fr:"le quart",en:"quarter"},{fr:"le tiers",en:"third"},{fr:"plus",en:"plus/more"},{fr:"moins",en:"minus/less"},{fr:"fois",en:"times"},{fr:"divisé par",en:"divided by"},{fr:"égal",en:"equals"}
+]},
+food:{name:"Food & Drink",icon:"🍽️",words:[
+{fr:"le pain",en:"bread"},{fr:"la baguette",en:"baguette"},{fr:"le croissant",en:"croissant"},{fr:"le beurre",en:"butter"},{fr:"la confiture",en:"jam"},{fr:"le fromage",en:"cheese"},{fr:"le lait",en:"milk"},{fr:"la crème",en:"cream"},{fr:"le yaourt",en:"yogurt"},{fr:"l'œuf",en:"egg"},{fr:"le vin",en:"wine"},{fr:"la bière",en:"beer"},{fr:"l'eau",en:"water"},{fr:"le jus",en:"juice"},{fr:"le café",en:"coffee"},{fr:"le thé",en:"tea"},{fr:"la viande",en:"meat"},{fr:"le bœuf",en:"beef"},{fr:"le porc",en:"pork"},{fr:"le poulet",en:"chicken"},{fr:"l'agneau",en:"lamb"},{fr:"le canard",en:"duck"},{fr:"le poisson",en:"fish"},{fr:"le saumon",en:"salmon"},{fr:"le thon",en:"tuna"},{fr:"les crevettes",en:"shrimp"},{fr:"les légumes",en:"vegetables"},{fr:"la pomme de terre",en:"potato"},{fr:"la carotte",en:"carrot"},{fr:"la tomate",en:"tomato"},{fr:"l'oignon",en:"onion"},{fr:"l'ail",en:"garlic"},{fr:"la salade",en:"salad/lettuce"},{fr:"les haricots",en:"beans"},{fr:"les petits pois",en:"peas"},{fr:"le champignon",en:"mushroom"},{fr:"la pomme",en:"apple"},{fr:"l'orange",en:"orange"},{fr:"la banane",en:"banana"},{fr:"la fraise",en:"strawberry"},{fr:"le raisin",en:"grape"},{fr:"la pêche",en:"peach"},{fr:"la poire",en:"pear"},{fr:"le citron",en:"lemon"},{fr:"la cerise",en:"cherry"},{fr:"le gâteau",en:"cake"},{fr:"la tarte",en:"pie/tart"},{fr:"la glace",en:"ice cream"},{fr:"le chocolat",en:"chocolate"},{fr:"les bonbons",en:"candy"},{fr:"le sucre",en:"sugar"},{fr:"le sel",en:"salt"},{fr:"le poivre",en:"pepper"},{fr:"l'huile",en:"oil"},{fr:"le vinaigre",en:"vinegar"},{fr:"la moutarde",en:"mustard"},{fr:"le petit-déjeuner",en:"breakfast"},{fr:"le déjeuner",en:"lunch"},{fr:"le dîner",en:"dinner"},{fr:"le goûter",en:"snack"},{fr:"le repas",en:"meal"},{fr:"l'addition",en:"the bill"},{fr:"le menu",en:"menu"},{fr:"l'entrée",en:"starter"},{fr:"le plat principal",en:"main course"},{fr:"le dessert",en:"dessert"}
+]},
+family:{name:"Family & People",icon:"👨‍👩‍👧‍👦",words:[
+{fr:"la famille",en:"family"},{fr:"les parents",en:"parents"},{fr:"le père",en:"father"},{fr:"la mère",en:"mother"},{fr:"le fils",en:"son"},{fr:"la fille",en:"daughter"},{fr:"le frère",en:"brother"},{fr:"la sœur",en:"sister"},{fr:"le grand-père",en:"grandfather"},{fr:"la grand-mère",en:"grandmother"},{fr:"les grands-parents",en:"grandparents"},{fr:"le petit-fils",en:"grandson"},{fr:"la petite-fille",en:"granddaughter"},{fr:"l'oncle",en:"uncle"},{fr:"la tante",en:"aunt"},{fr:"le cousin",en:"cousin (m)"},{fr:"la cousine",en:"cousin (f)"},{fr:"le neveu",en:"nephew"},{fr:"la nièce",en:"niece"},{fr:"le mari",en:"husband"},{fr:"la femme",en:"wife/woman"},{fr:"l'homme",en:"man"},{fr:"l'enfant",en:"child"},{fr:"le bébé",en:"baby"},{fr:"l'adolescent",en:"teenager"},{fr:"l'adulte",en:"adult"},{fr:"la personne",en:"person"},{fr:"les gens",en:"people"},{fr:"l'ami",en:"friend (m)"},{fr:"l'amie",en:"friend (f)"},{fr:"le copain",en:"boyfriend/friend"},{fr:"la copine",en:"girlfriend/friend"},{fr:"le voisin",en:"neighbor (m)"},{fr:"la voisine",en:"neighbor (f)"},{fr:"le collègue",en:"colleague"},{fr:"le patron",en:"boss"},{fr:"l'employé",en:"employee"},{fr:"le client",en:"customer"},{fr:"le professeur",en:"teacher"},{fr:"l'étudiant",en:"student"}
+]},
+colors:{name:"Colors & Shapes",icon:"🎨",words:[
+{fr:"rouge",en:"red"},{fr:"bleu",en:"blue"},{fr:"vert",en:"green"},{fr:"jaune",en:"yellow"},{fr:"orange",en:"orange"},{fr:"violet",en:"purple"},{fr:"rose",en:"pink"},{fr:"noir",en:"black"},{fr:"blanc",en:"white"},{fr:"gris",en:"gray"},{fr:"marron",en:"brown"},{fr:"beige",en:"beige"},{fr:"or",en:"gold"},{fr:"argent",en:"silver"},{fr:"bleu clair",en:"light blue"},{fr:"bleu foncé",en:"dark blue"},{fr:"le cercle",en:"circle"},{fr:"le carré",en:"square"},{fr:"le triangle",en:"triangle"},{fr:"le rectangle",en:"rectangle"},{fr:"la ligne",en:"line"},{fr:"le point",en:"point/dot"},{fr:"l'étoile",en:"star"},{fr:"le cœur",en:"heart shape"}
+]},
+time:{name:"Time & Calendar",icon:"🕐",words:[
+{fr:"le temps",en:"time/weather"},{fr:"l'heure",en:"hour/time"},{fr:"la minute",en:"minute"},{fr:"la seconde",en:"second"},{fr:"aujourd'hui",en:"today"},{fr:"demain",en:"tomorrow"},{fr:"hier",en:"yesterday"},{fr:"avant-hier",en:"day before yesterday"},{fr:"après-demain",en:"day after tomorrow"},{fr:"maintenant",en:"now"},{fr:"bientôt",en:"soon"},{fr:"tard",en:"late"},{fr:"tôt",en:"early"},{fr:"toujours",en:"always"},{fr:"jamais",en:"never"},{fr:"souvent",en:"often"},{fr:"parfois",en:"sometimes"},{fr:"rarement",en:"rarely"},{fr:"lundi",en:"Monday"},{fr:"mardi",en:"Tuesday"},{fr:"mercredi",en:"Wednesday"},{fr:"jeudi",en:"Thursday"},{fr:"vendredi",en:"Friday"},{fr:"samedi",en:"Saturday"},{fr:"dimanche",en:"Sunday"},{fr:"janvier",en:"January"},{fr:"février",en:"February"},{fr:"mars",en:"March"},{fr:"avril",en:"April"},{fr:"mai",en:"May"},{fr:"juin",en:"June"},{fr:"juillet",en:"July"},{fr:"août",en:"August"},{fr:"septembre",en:"September"},{fr:"octobre",en:"October"},{fr:"novembre",en:"November"},{fr:"décembre",en:"December"},{fr:"le printemps",en:"spring"},{fr:"l'été",en:"summer"},{fr:"l'automne",en:"autumn"},{fr:"l'hiver",en:"winter"},{fr:"le matin",en:"morning"},{fr:"l'après-midi",en:"afternoon"},{fr:"le soir",en:"evening"},{fr:"la nuit",en:"night"},{fr:"minuit",en:"midnight"},{fr:"midi",en:"noon"},{fr:"la semaine",en:"week"},{fr:"le week-end",en:"weekend"},{fr:"le mois",en:"month"},{fr:"l'année",en:"year"},{fr:"le siècle",en:"century"}
+]},
+places:{name:"Places & Buildings",icon:"🏠",words:[
+{fr:"la maison",en:"house"},{fr:"l'appartement",en:"apartment"},{fr:"l'immeuble",en:"building"},{fr:"la chambre",en:"bedroom"},{fr:"la cuisine",en:"kitchen"},{fr:"la salle de bains",en:"bathroom"},{fr:"le salon",en:"living room"},{fr:"la salle à manger",en:"dining room"},{fr:"le bureau",en:"office/desk"},{fr:"le jardin",en:"garden"},{fr:"le balcon",en:"balcony"},{fr:"le garage",en:"garage"},{fr:"l'escalier",en:"stairs"},{fr:"l'ascenseur",en:"elevator"},{fr:"l'école",en:"school"},{fr:"l'université",en:"university"},{fr:"le lycée",en:"high school"},{fr:"le collège",en:"middle school"},{fr:"l'hôpital",en:"hospital"},{fr:"la pharmacie",en:"pharmacy"},{fr:"le médecin",en:"doctor's office"},{fr:"le dentiste",en:"dentist"},{fr:"le restaurant",en:"restaurant"},{fr:"le café",en:"café"},{fr:"le bar",en:"bar"},{fr:"la boulangerie",en:"bakery"},{fr:"la pâtisserie",en:"pastry shop"},{fr:"la boucherie",en:"butcher shop"},{fr:"la banque",en:"bank"},{fr:"la poste",en:"post office"},{fr:"le supermarché",en:"supermarket"},{fr:"le marché",en:"market"},{fr:"le magasin",en:"store"},{fr:"le centre commercial",en:"shopping center"},{fr:"la bibliothèque",en:"library"},{fr:"le musée",en:"museum"},{fr:"le cinéma",en:"cinema"},{fr:"le théâtre",en:"theater"},{fr:"le stade",en:"stadium"},{fr:"la piscine",en:"swimming pool"},{fr:"le parc",en:"park"},{fr:"la gare",en:"train station"},{fr:"l'aéroport",en:"airport"},{fr:"l'arrêt de bus",en:"bus stop"},{fr:"la station de métro",en:"metro station"},{fr:"l'hôtel",en:"hotel"},{fr:"l'église",en:"church"},{fr:"la mosquée",en:"mosque"},{fr:"la plage",en:"beach"},{fr:"la montagne",en:"mountain"},{fr:"la forêt",en:"forest"},{fr:"le lac",en:"lake"},{fr:"la rivière",en:"river"},{fr:"la mer",en:"sea"},{fr:"l'île",en:"island"}
+]},
+body:{name:"Body & Health",icon:"🫀",words:[
+{fr:"le corps",en:"body"},{fr:"la tête",en:"head"},{fr:"le visage",en:"face"},{fr:"les cheveux",en:"hair"},{fr:"le front",en:"forehead"},{fr:"les yeux",en:"eyes"},{fr:"l'œil",en:"eye"},{fr:"le sourcil",en:"eyebrow"},{fr:"les cils",en:"eyelashes"},{fr:"le nez",en:"nose"},{fr:"la joue",en:"cheek"},{fr:"la bouche",en:"mouth"},{fr:"les lèvres",en:"lips"},{fr:"les dents",en:"teeth"},{fr:"la langue",en:"tongue"},{fr:"le menton",en:"chin"},{fr:"l'oreille",en:"ear"},{fr:"le cou",en:"neck"},{fr:"l'épaule",en:"shoulder"},{fr:"le bras",en:"arm"},{fr:"le coude",en:"elbow"},{fr:"le poignet",en:"wrist"},{fr:"la main",en:"hand"},{fr:"le doigt",en:"finger"},{fr:"le pouce",en:"thumb"},{fr:"l'ongle",en:"nail"},{fr:"la poitrine",en:"chest"},{fr:"le dos",en:"back"},{fr:"le ventre",en:"stomach"},{fr:"la hanche",en:"hip"},{fr:"la jambe",en:"leg"},{fr:"le genou",en:"knee"},{fr:"la cheville",en:"ankle"},{fr:"le pied",en:"foot"},{fr:"l'orteil",en:"toe"},{fr:"le cœur",en:"heart"},{fr:"le cerveau",en:"brain"},{fr:"le poumon",en:"lung"},{fr:"l'estomac",en:"stomach organ"},{fr:"le foie",en:"liver"},{fr:"le sang",en:"blood"},{fr:"l'os",en:"bone"},{fr:"le muscle",en:"muscle"},{fr:"la peau",en:"skin"},{fr:"la santé",en:"health"},{fr:"la maladie",en:"illness"},{fr:"la douleur",en:"pain"},{fr:"la fièvre",en:"fever"},{fr:"le rhume",en:"cold"},{fr:"la grippe",en:"flu"},{fr:"le médicament",en:"medicine"},{fr:"l'ordonnance",en:"prescription"},{fr:"le rendez-vous",en:"appointment"}
+]},
+weather:{name:"Weather & Nature",icon:"☀️",words:[
+{fr:"le temps",en:"weather"},{fr:"il fait beau",en:"nice weather"},{fr:"il fait mauvais",en:"bad weather"},{fr:"il fait chaud",en:"it's hot"},{fr:"il fait froid",en:"it's cold"},{fr:"il fait frais",en:"it's cool"},{fr:"il fait doux",en:"it's mild"},{fr:"il pleut",en:"it's raining"},{fr:"il neige",en:"it's snowing"},{fr:"il y a du vent",en:"it's windy"},{fr:"il y a du soleil",en:"it's sunny"},{fr:"il y a du brouillard",en:"it's foggy"},{fr:"il y a des nuages",en:"it's cloudy"},{fr:"il y a de l'orage",en:"there's a storm"},{fr:"le soleil",en:"sun"},{fr:"la lune",en:"moon"},{fr:"l'étoile",en:"star"},{fr:"le ciel",en:"sky"},{fr:"le nuage",en:"cloud"},{fr:"la pluie",en:"rain"},{fr:"la neige",en:"snow"},{fr:"le vent",en:"wind"},{fr:"l'orage",en:"storm"},{fr:"l'éclair",en:"lightning"},{fr:"le tonnerre",en:"thunder"},{fr:"le brouillard",en:"fog"},{fr:"la tempête",en:"storm"},{fr:"l'arc-en-ciel",en:"rainbow"},{fr:"la température",en:"temperature"},{fr:"le degré",en:"degree"},{fr:"l'arbre",en:"tree"},{fr:"la fleur",en:"flower"},{fr:"la feuille",en:"leaf"},{fr:"l'herbe",en:"grass"},{fr:"la plante",en:"plant"},{fr:"la forêt",en:"forest"},{fr:"le champ",en:"field"},{fr:"la colline",en:"hill"},{fr:"la vallée",en:"valley"},{fr:"le désert",en:"desert"},{fr:"la jungle",en:"jungle"}
+]},
+travel:{name:"Travel & Transport",icon:"✈️",words:[
+{fr:"le voyage",en:"trip"},{fr:"les vacances",en:"vacation"},{fr:"le touriste",en:"tourist"},{fr:"le passeport",en:"passport"},{fr:"le visa",en:"visa"},{fr:"la carte d'identité",en:"ID card"},{fr:"le billet",en:"ticket"},{fr:"l'aller simple",en:"one-way ticket"},{fr:"l'aller-retour",en:"round trip"},{fr:"la réservation",en:"reservation"},{fr:"la valise",en:"suitcase"},{fr:"le sac",en:"bag"},{fr:"le sac à dos",en:"backpack"},{fr:"la voiture",en:"car"},{fr:"le train",en:"train"},{fr:"l'avion",en:"airplane"},{fr:"le bus",en:"bus"},{fr:"le métro",en:"subway"},{fr:"le taxi",en:"taxi"},{fr:"le vélo",en:"bicycle"},{fr:"la moto",en:"motorcycle"},{fr:"le bateau",en:"boat"},{fr:"le ferry",en:"ferry"},{fr:"le tramway",en:"tram"},{fr:"la gare",en:"train station"},{fr:"l'aéroport",en:"airport"},{fr:"le quai",en:"platform"},{fr:"la piste",en:"runway"},{fr:"l'embarquement",en:"boarding"},{fr:"le décollage",en:"takeoff"},{fr:"l'atterrissage",en:"landing"},{fr:"le vol",en:"flight"},{fr:"la correspondance",en:"connection"},{fr:"le retard",en:"delay"},{fr:"à droite",en:"to the right"},{fr:"à gauche",en:"to the left"},{fr:"tout droit",en:"straight ahead"},{fr:"au coin",en:"at the corner"},{fr:"en face de",en:"across from"},{fr:"à côté de",en:"next to"},{fr:"près de",en:"near"},{fr:"loin de",en:"far from"},{fr:"la carte",en:"map"},{fr:"le plan",en:"city map"},{fr:"le guide",en:"guide/guidebook"},{fr:"la direction",en:"direction"}
+]},
+adjectives:{name:"Adjectives",icon:"📝",words:[
+{fr:"grand",en:"big/tall"},{fr:"petit",en:"small"},{fr:"gros",en:"fat/big"},{fr:"mince",en:"thin"},{fr:"long",en:"long"},{fr:"court",en:"short"},{fr:"haut",en:"high"},{fr:"bas",en:"low"},{fr:"large",en:"wide"},{fr:"étroit",en:"narrow"},{fr:"bon",en:"good"},{fr:"mauvais",en:"bad"},{fr:"meilleur",en:"better"},{fr:"pire",en:"worse"},{fr:"beau",en:"beautiful"},{fr:"joli",en:"pretty"},{fr:"laid",en:"ugly"},{fr:"nouveau",en:"new"},{fr:"vieux",en:"old"},{fr:"jeune",en:"young"},{fr:"ancien",en:"ancient/former"},{fr:"moderne",en:"modern"},{fr:"chaud",en:"hot"},{fr:"froid",en:"cold"},{fr:"tiède",en:"lukewarm"},{fr:"facile",en:"easy"},{fr:"difficile",en:"difficult"},{fr:"simple",en:"simple"},{fr:"compliqué",en:"complicated"},{fr:"rapide",en:"fast"},{fr:"lent",en:"slow"},{fr:"heureux",en:"happy"},{fr:"triste",en:"sad"},{fr:"content",en:"pleased"},{fr:"mécontent",en:"displeased"},{fr:"fatigué",en:"tired"},{fr:"énergique",en:"energetic"},{fr:"malade",en:"sick"},{fr:"en bonne santé",en:"healthy"},{fr:"fort",en:"strong"},{fr:"faible",en:"weak"},{fr:"intelligent",en:"intelligent"},{fr:"stupide",en:"stupid"},{fr:"gentil",en:"kind"},{fr:"méchant",en:"mean"},{fr:"poli",en:"polite"},{fr:"impoli",en:"impolite"},{fr:"sympa",en:"nice"},{fr:"ennuyeux",en:"boring"},{fr:"intéressant",en:"interesting"},{fr:"amusant",en:"amusing"},{fr:"drôle",en:"funny"},{fr:"sérieux",en:"serious"},{fr:"important",en:"important"},{fr:"utile",en:"useful"},{fr:"inutile",en:"useless"},{fr:"cher",en:"expensive"},{fr:"bon marché",en:"cheap"},{fr:"gratuit",en:"free"},{fr:"riche",en:"rich"},{fr:"pauvre",en:"poor"},{fr:"plein",en:"full"},{fr:"vide",en:"empty"},{fr:"propre",en:"clean"},{fr:"sale",en:"dirty"},{fr:"ouvert",en:"open"},{fr:"fermé",en:"closed"},{fr:"vrai",en:"true"},{fr:"faux",en:"false"},{fr:"possible",en:"possible"},{fr:"impossible",en:"impossible"},{fr:"nécessaire",en:"necessary"},{fr:"certain",en:"certain"},{fr:"sûr",en:"sure"},{fr:"pareil",en:"same"},{fr:"différent",en:"different"}
+]},
+phrases:{name:"Useful Phrases",icon:"💬",words:[
+{fr:"Je ne comprends pas",en:"I don't understand"},{fr:"Pouvez-vous répéter?",en:"Can you repeat?"},{fr:"Plus lentement, s'il vous plaît",en:"More slowly, please"},{fr:"Comment dit-on...?",en:"How do you say...?"},{fr:"Qu'est-ce que ça veut dire?",en:"What does that mean?"},{fr:"Parlez-vous anglais?",en:"Do you speak English?"},{fr:"Je ne parle pas bien français",en:"I don't speak French well"},{fr:"Je suis débutant",en:"I'm a beginner"},{fr:"Combien ça coûte?",en:"How much does it cost?"},{fr:"C'est trop cher",en:"It's too expensive"},{fr:"Où est...?",en:"Where is...?"},{fr:"Comment y aller?",en:"How to get there?"},{fr:"Je voudrais...",en:"I would like..."},{fr:"J'ai besoin de...",en:"I need..."},{fr:"Est-ce que je peux...?",en:"May I...?"},{fr:"L'addition, s'il vous plaît",en:"The bill, please"},{fr:"Je suis perdu",en:"I'm lost"},{fr:"Pouvez-vous m'aider?",en:"Can you help me?"},{fr:"Je ne sais pas",en:"I don't know"},{fr:"Je pense que...",en:"I think that..."},{fr:"À mon avis...",en:"In my opinion..."},{fr:"Quelle heure est-il?",en:"What time is it?"},{fr:"Où sont les toilettes?",en:"Where are the toilets?"},{fr:"J'ai faim",en:"I'm hungry"},{fr:"J'ai soif",en:"I'm thirsty"},{fr:"J'ai chaud",en:"I'm hot"},{fr:"J'ai froid",en:"I'm cold"},{fr:"Je suis fatigué",en:"I'm tired"},{fr:"Je suis malade",en:"I'm sick"},{fr:"J'ai mal à...",en:"I have pain in..."},{fr:"Pas de problème",en:"No problem"},{fr:"Ça ne fait rien",en:"It doesn't matter"},{fr:"Ce n'est pas grave",en:"It's not serious"},{fr:"Tant pis",en:"Too bad"},{fr:"Tant mieux",en:"So much the better"},{fr:"Quand même",en:"Still/anyway"},{fr:"En fait",en:"Actually"},{fr:"Par contre",en:"On the other hand"},{fr:"C'est-à-dire",en:"That is to say"},{fr:"Il y a",en:"There is/are"},{fr:"Il faut",en:"It is necessary"}
+]},
+work:{name:"Work & Business",icon:"💼",words:[
+{fr:"le travail",en:"work"},{fr:"l'emploi",en:"job/employment"},{fr:"le métier",en:"profession"},{fr:"la carrière",en:"career"},{fr:"le bureau",en:"office"},{fr:"l'entreprise",en:"company"},{fr:"la société",en:"company/society"},{fr:"l'usine",en:"factory"},{fr:"le patron",en:"boss"},{fr:"le directeur",en:"director"},{fr:"le manager",en:"manager"},{fr:"le collègue",en:"colleague"},{fr:"l'employé",en:"employee"},{fr:"le client",en:"client"},{fr:"le fournisseur",en:"supplier"},{fr:"le salaire",en:"salary"},{fr:"le contrat",en:"contract"},{fr:"la réunion",en:"meeting"},{fr:"le projet",en:"project"},{fr:"la présentation",en:"presentation"},{fr:"le rapport",en:"report"},{fr:"la facture",en:"invoice"},{fr:"le budget",en:"budget"},{fr:"les bénéfices",en:"profits"},{fr:"les pertes",en:"losses"},{fr:"l'ordinateur",en:"computer"},{fr:"l'écran",en:"screen"},{fr:"le clavier",en:"keyboard"},{fr:"la souris",en:"mouse"},{fr:"l'imprimante",en:"printer"},{fr:"le téléphone",en:"telephone"},{fr:"l'email",en:"email"},{fr:"le fichier",en:"file"},{fr:"le dossier",en:"folder"},{fr:"le document",en:"document"},{fr:"la lettre",en:"letter"},{fr:"l'entretien",en:"interview"},{fr:"le CV",en:"resume"},{fr:"la candidature",en:"application"},{fr:"l'expérience",en:"experience"},{fr:"les compétences",en:"skills"},{fr:"la formation",en:"training"},{fr:"le stage",en:"internship"},{fr:"le chômage",en:"unemployment"},{fr:"la retraite",en:"retirement"}
+]},
+education:{name:"Education & Learning",icon:"📚",words:[
+{fr:"l'école",en:"school"},{fr:"le collège",en:"middle school"},{fr:"le lycée",en:"high school"},{fr:"l'université",en:"university"},{fr:"la faculté",en:"faculty"},{fr:"le cours",en:"class/course"},{fr:"la leçon",en:"lesson"},{fr:"l'exercice",en:"exercise"},{fr:"les devoirs",en:"homework"},{fr:"l'examen",en:"exam"},{fr:"le test",en:"test"},{fr:"la note",en:"grade"},{fr:"le diplôme",en:"diploma"},{fr:"la licence",en:"bachelor's degree"},{fr:"le master",en:"master's degree"},{fr:"le doctorat",en:"doctorate"},{fr:"le professeur",en:"teacher"},{fr:"l'enseignant",en:"instructor"},{fr:"l'étudiant",en:"student"},{fr:"l'élève",en:"pupil"},{fr:"la classe",en:"classroom"},{fr:"le livre",en:"book"},{fr:"le cahier",en:"notebook"},{fr:"le stylo",en:"pen"},{fr:"le crayon",en:"pencil"},{fr:"la gomme",en:"eraser"},{fr:"la règle",en:"ruler"},{fr:"le dictionnaire",en:"dictionary"},{fr:"la grammaire",en:"grammar"},{fr:"le vocabulaire",en:"vocabulary"},{fr:"la conjugaison",en:"conjugation"},{fr:"l'orthographe",en:"spelling"},{fr:"la prononciation",en:"pronunciation"},{fr:"la phrase",en:"sentence"},{fr:"le mot",en:"word"},{fr:"la question",en:"question"},{fr:"la réponse",en:"answer"},{fr:"l'erreur",en:"mistake"},{fr:"la faute",en:"fault/mistake"},{fr:"apprendre",en:"to learn"},{fr:"enseigner",en:"to teach"},{fr:"étudier",en:"to study"},{fr:"réviser",en:"to review"},{fr:"comprendre",en:"to understand"},{fr:"mémoriser",en:"to memorize"}
+]},
+technology:{name:"Technology",icon:"💻",words:[
+{fr:"l'ordinateur",en:"computer"},{fr:"le portable",en:"laptop"},{fr:"la tablette",en:"tablet"},{fr:"le smartphone",en:"smartphone"},{fr:"le téléphone",en:"phone"},{fr:"l'écran",en:"screen"},{fr:"le clavier",en:"keyboard"},{fr:"la souris",en:"mouse"},{fr:"l'internet",en:"internet"},{fr:"le wifi",en:"wifi"},{fr:"le site web",en:"website"},{fr:"la page",en:"page"},{fr:"le lien",en:"link"},{fr:"le moteur de recherche",en:"search engine"},{fr:"le navigateur",en:"browser"},{fr:"l'application",en:"app"},{fr:"le logiciel",en:"software"},{fr:"le programme",en:"program"},{fr:"le fichier",en:"file"},{fr:"le dossier",en:"folder"},{fr:"télécharger",en:"to download"},{fr:"envoyer",en:"to send"},{fr:"recevoir",en:"to receive"},{fr:"partager",en:"to share"},{fr:"sauvegarder",en:"to save"},{fr:"supprimer",en:"to delete"},{fr:"copier",en:"to copy"},{fr:"coller",en:"to paste"},{fr:"imprimer",en:"to print"},{fr:"le mot de passe",en:"password"},{fr:"le compte",en:"account"},{fr:"le profil",en:"profile"},{fr:"les réseaux sociaux",en:"social media"},{fr:"le message",en:"message"},{fr:"la notification",en:"notification"},{fr:"le streaming",en:"streaming"},{fr:"la vidéo",en:"video"},{fr:"la photo",en:"photo"},{fr:"l'appareil photo",en:"camera"},{fr:"la batterie",en:"battery"},{fr:"le chargeur",en:"charger"}
+]},
+emotions:{name:"Emotions & Feelings",icon:"😊",words:[
+{fr:"le bonheur",en:"happiness"},{fr:"la joie",en:"joy"},{fr:"la tristesse",en:"sadness"},{fr:"la colère",en:"anger"},{fr:"la peur",en:"fear"},{fr:"la surprise",en:"surprise"},{fr:"l'amour",en:"love"},{fr:"la haine",en:"hate"},{fr:"l'espoir",en:"hope"},{fr:"le désespoir",en:"despair"},{fr:"la fierté",en:"pride"},{fr:"la honte",en:"shame"},{fr:"la jalousie",en:"jealousy"},{fr:"l'envie",en:"envy"},{fr:"la confiance",en:"confidence"},{fr:"le doute",en:"doubt"},{fr:"l'inquiétude",en:"worry"},{fr:"le stress",en:"stress"},{fr:"la fatigue",en:"tiredness"},{fr:"l'ennui",en:"boredom"},{fr:"l'enthousiasme",en:"enthusiasm"},{fr:"la curiosité",en:"curiosity"},{fr:"la satisfaction",en:"satisfaction"},{fr:"la déception",en:"disappointment"},{fr:"la frustration",en:"frustration"},{fr:"le soulagement",en:"relief"},{fr:"heureux",en:"happy"},{fr:"triste",en:"sad"},{fr:"en colère",en:"angry"},{fr:"effrayé",en:"scared"},{fr:"surpris",en:"surprised"},{fr:"amoureux",en:"in love"},{fr:"jaloux",en:"jealous"},{fr:"fier",en:"proud"},{fr:"honteux",en:"ashamed"},{fr:"inquiet",en:"worried"},{fr:"stressé",en:"stressed"},{fr:"fatigué",en:"tired"},{fr:"ennuyé",en:"bored"},{fr:"enthousiaste",en:"enthusiastic"},{fr:"satisfait",en:"satisfied"},{fr:"déçu",en:"disappointed"},{fr:"frustré",en:"frustrated"},{fr:"soulagé",en:"relieved"},{fr:"nerveux",en:"nervous"},{fr:"calme",en:"calm"},{fr:"détendu",en:"relaxed"},{fr:"excité",en:"excited"}
+]}
+};
+function getAllVocab(){var a=[];Object.keys(VOCAB).forEach(function(c){VOCAB[c].words.forEach(function(w){a.push({fr:w.fr,en:w.en,category:c})})});return a}
+// GRAMMAR - EXPANDED (A1 to B2)
+var GRAMMAR=[
+// A1 LEVEL
+{id:"articles",title:"Articles",level:"A1",content:"<div class='grammar-card'><h3>Definite Articles</h3><table class='grammar-table'><tr><th>Article</th><th>Usage</th></tr><tr><td><b>le</b></td><td>masculine</td></tr><tr><td><b>la</b></td><td>feminine</td></tr><tr><td><b>l'</b></td><td>before vowel</td></tr><tr><td><b>les</b></td><td>plural</td></tr></table></div>"},
+{id:"gender",title:"Noun Gender",level:"A1",content:"<div class='grammar-card'><h3>Masculine: -age, -ment, -eau</h3><h3>Feminine: -tion, -té, -ette, -ie</h3></div>"},
+{id:"present",title:"Present Tense",level:"A1",content:"<div class='grammar-card'><h3>-ER: -e, -es, -e, -ons, -ez, -ent</h3><h3>-IR: -is, -is, -it, -issons, -issez, -issent</h3></div>"},
+{id:"negation",title:"Negation",level:"A1",content:"<div class='grammar-card'><h3>Ne...Pas</h3><p>Je ne parle pas.</p><p>ne...jamais (never), ne...rien (nothing)</p></div>"},
+{id:"questions",title:"Questions",level:"A1",content:"<div class='grammar-card'><h3>Three Ways</h3><p>1. Intonation: Tu parles?</p><p>2. Est-ce que tu parles?</p><p>3. Parles-tu?</p></div>"},
+{id:"possessives",title:"Possessives",level:"A1",content:"<div class='grammar-card'><h3>mon/ma/mes, ton/ta/tes, son/sa/ses</h3><h3>notre/nos, votre/vos, leur/leurs</h3></div>"},
+// A2 LEVEL
+{id:"passecompose",title:"Passé Composé",level:"A2",content:"<div class='grammar-card'><h3>avoir/être + past participle</h3><p>-ER→-é, -IR→-i, -RE→-u</p></div>"},
+{id:"imparfait",title:"Imparfait",level:"A2",content:"<div class='grammar-card'><h3>nous stem + -ais,-ais,-ait,-ions,-iez,-aient</h3></div>"},
+{id:"futur",title:"Future Tense",level:"A2",content:"<div class='grammar-card'><h3>infinitive + -ai,-as,-a,-ons,-ez,-ont</h3></div>"},
+{id:"comparatives",title:"Comparatives",level:"A2",content:"<div class='grammar-card'><h3>plus...que, moins...que, aussi...que</h3><p>bon→meilleur, mauvais→pire</p></div>"},
+{id:"reflexive",title:"Reflexive Verbs",level:"A2",content:"<div class='grammar-card'><h3>Formation</h3><p>Subject + reflexive pronoun + verb</p><table class='grammar-table'><tr><td>je</td><td>me</td><td>je me lave</td></tr><tr><td>tu</td><td>te</td><td>tu te laves</td></tr><tr><td>il/elle</td><td>se</td><td>il se lave</td></tr><tr><td>nous</td><td>nous</td><td>nous nous lavons</td></tr><tr><td>vous</td><td>vous</td><td>vous vous lavez</td></tr><tr><td>ils</td><td>se</td><td>ils se lavent</td></tr></table></div><div class='grammar-card'><h3>Common Reflexive Verbs</h3><p>se lever (get up), se coucher (go to bed), se laver (wash), s'habiller (get dressed), se réveiller (wake up), s'appeler (be called), se souvenir (remember), se promener (take a walk)</p></div>"},
+// B1 LEVEL
+{id:"subjunctive",title:"Subjunctive Mood",level:"B1",content:"<div class='grammar-card'><h3>Formation</h3><p>Take ils form present, remove -ent, add:</p><table class='grammar-table'><tr><td>que je</td><td>-e</td></tr><tr><td>que tu</td><td>-es</td></tr><tr><td>qu'il</td><td>-e</td></tr><tr><td>que nous</td><td>-ions</td></tr><tr><td>que vous</td><td>-iez</td></tr><tr><td>qu'ils</td><td>-ent</td></tr></table></div><div class='grammar-card'><h3>When to Use</h3><p>After expressions of: wish, doubt, emotion, necessity</p><p>- Il faut que, Je veux que, Je doute que, Je suis content que, Bien que, Pour que, Avant que</p><div class='grammar-example'><div class='grammar-french'>Il faut que tu viennes.</div><div class='grammar-english'>You must come.</div></div></div>"},
+{id:"conditional",title:"Conditional Mood",level:"B1",content:"<div class='grammar-card'><h3>Formation</h3><p>Future stem + imparfait endings:</p><table class='grammar-table'><tr><td>je</td><td>-ais</td><td>je parlerais</td></tr><tr><td>tu</td><td>-ais</td><td>tu parlerais</td></tr><tr><td>il</td><td>-ait</td><td>il parlerait</td></tr><tr><td>nous</td><td>-ions</td><td>nous parlerions</td></tr><tr><td>vous</td><td>-iez</td><td>vous parleriez</td></tr><tr><td>ils</td><td>-aient</td><td>ils parleraient</td></tr></table></div><div class='grammar-card'><h3>Uses</h3><p>- Polite requests: Je voudrais...</p><p>- Hypothetical: Si j'avais..., je ferais...</p><p>- Reported speech</p><p>- Advice: Tu devrais...</p></div>"},
+{id:"plusqueparfait",title:"Pluperfect (Plus-que-parfait)",level:"B1",content:"<div class='grammar-card'><h3>Formation</h3><p>Imparfait of avoir/être + past participle</p><div class='grammar-example'><div class='grammar-french'>J'avais déjà mangé quand il est arrivé.</div><div class='grammar-english'>I had already eaten when he arrived.</div></div></div><div class='grammar-card'><h3>Uses</h3><p>Action completed before another past action</p><p>- With avant que, après que, quand</p><p>- Reported speech in past</p><div class='grammar-example'><div class='grammar-french'>Elle m'a dit qu'elle avait fini.</div><div class='grammar-english'>She told me she had finished.</div></div></div>"},
+{id:"relative",title:"Relative Pronouns",level:"B1",content:"<div class='grammar-card'><h3>Qui, Que, Dont, Où</h3><table class='grammar-table'><tr><td><b>qui</b></td><td>who/which (subject)</td><td>L'homme qui parle</td></tr><tr><td><b>que</b></td><td>whom/which (object)</td><td>Le livre que je lis</td></tr><tr><td><b>dont</b></td><td>whose/of which</td><td>La fille dont je parle</td></tr><tr><td><b>où</b></td><td>where/when</td><td>La ville où j'habite</td></tr></table></div><div class='grammar-card'><h3>Lequel, Laquelle</h3><p>Used after prepositions:</p><p>Le stylo avec <b>lequel</b> j'écris</p><p>La raison pour <b>laquelle</b> je suis venu</p></div>"},
+{id:"passive",title:"Passive Voice",level:"B1",content:"<div class='grammar-card'><h3>Formation</h3><p>Subject + être (conjugated) + past participle + par + agent</p><div class='grammar-example'><div class='grammar-french'>Le livre est lu par les étudiants.</div><div class='grammar-english'>The book is read by the students.</div></div></div><div class='grammar-card'><h3>Tenses in Passive</h3><p>Present: est mangé</p><p>Passé composé: a été mangé</p><p>Imparfait: était mangé</p><p>Future: sera mangé</p><div class='grammar-note'>Past participle agrees with subject!</div></div>"},
+// B2 LEVEL
+{id:"pastsubjunctive",title:"Past Subjunctive",level:"B2",content:"<div class='grammar-card'><h3>Formation</h3><p>Subjunctive of avoir/être + past participle</p><div class='grammar-example'><div class='grammar-french'>Je suis content qu'il soit venu.</div><div class='grammar-english'>I'm happy that he came.</div></div></div><div class='grammar-card'><h3>Uses</h3><p>Express completed action in subjunctive context:</p><p>- Je doute qu'il ait compris.</p><p>- Bien qu'elle soit partie...</p><p>- C'est le meilleur film que j'aie vu.</p></div>"},
+{id:"futureperf",title:"Future Perfect",level:"B2",content:"<div class='grammar-card'><h3>Formation</h3><p>Future of avoir/être + past participle</p><div class='grammar-example'><div class='grammar-french'>J'aurai fini avant midi.</div><div class='grammar-english'>I will have finished before noon.</div></div></div><div class='grammar-card'><h3>Uses</h3><p>- Action completed before future point</p><p>- With quand, dès que, aussitôt que:</p><div class='grammar-example'><div class='grammar-french'>Quand tu seras arrivé, appelle-moi.</div><div class='grammar-english'>When you have arrived, call me.</div></div></div>"},
+{id:"condpast",title:"Conditional Past",level:"B2",content:"<div class='grammar-card'><h3>Formation</h3><p>Conditional of avoir/être + past participle</p><div class='grammar-example'><div class='grammar-french'>J'aurais voulu venir.</div><div class='grammar-english'>I would have liked to come.</div></div></div><div class='grammar-card'><h3>Si Clauses (3rd Conditional)</h3><p><b>Si + plus-que-parfait, conditionnel passé</b></p><div class='grammar-example'><div class='grammar-french'>Si j'avais su, je serais venu.</div><div class='grammar-english'>If I had known, I would have come.</div></div></div>"},
+{id:"gerund",title:"Gerund (en + present participle)",level:"B2",content:"<div class='grammar-card'><h3>Formation</h3><p>en + present participle (nous form -ons → -ant)</p><p>parler → en parlant</p><p>finir → en finissant</p></div><div class='grammar-card'><h3>Uses</h3><p>- While doing: en mangeant (while eating)</p><p>- By doing: en étudiant (by studying)</p><div class='grammar-example'><div class='grammar-french'>Il écoute de la musique en travaillant.</div><div class='grammar-english'>He listens to music while working.</div></div><div class='grammar-note'>Exceptions: être → étant, avoir → ayant, savoir → sachant</div></div>"},
+{id:"discours",title:"Reported Speech",level:"B2",content:"<div class='grammar-card'><h3>Tense Changes</h3><p>When reporting past speech:</p><table class='grammar-table'><tr><td>Present</td><td>→ Imparfait</td></tr><tr><td>Passé composé</td><td>→ Plus-que-parfait</td></tr><tr><td>Future</td><td>→ Conditional</td></tr><tr><td>Imparfait</td><td>→ Imparfait</td></tr></table></div><div class='grammar-card'><h3>Examples</h3><div class='grammar-example'><div class='grammar-french'>Il a dit: \"Je viens.\" → Il a dit qu'il venait.</div></div><div class='grammar-example'><div class='grammar-french'>Elle a dit: \"J'ai fini.\" → Elle a dit qu'elle avait fini.</div></div></div>"},
+{id:"negadvanced",title:"Advanced Negation",level:"B2",content:"<div class='grammar-card'><h3>Complex Negatives</h3><table class='grammar-table'><tr><td>ne...aucun(e)</td><td>not any, none</td></tr><tr><td>ne...ni...ni</td><td>neither...nor</td></tr><tr><td>ne...guère</td><td>hardly</td></tr><tr><td>ne...nullement</td><td>not at all</td></tr><tr><td>ne...nulle part</td><td>nowhere</td></tr></table></div><div class='grammar-card'><h3>Restrictions</h3><p><b>ne...que</b> = only</p><div class='grammar-example'><div class='grammar-french'>Je n'ai que 5 euros.</div><div class='grammar-english'>I only have 5 euros.</div></div><p><b>sans</b> + infinitive (without)</p><div class='grammar-example'><div class='grammar-french'>Il est parti sans dire au revoir.</div></div></div>"}
+];
+// APP STATE
+var stats=JSON.parse(localStorage.getItem("frenchStats6"))||{xp:0,streak:0,practiced:0,correct:0,verbsStudied:0,vocabStudied:0,grammarStudied:0,quizzesTaken:0,lastPractice:null,mastery:{},skillScores:{verbs_present:0,verbs_passe:0,verbs_imparfait:0,verbs_futur:0,vocab_greetings:0,vocab_numbers:0,vocab_food:0,vocab_family:0,vocab_colors:0,vocab_time:0,vocab_places:0,vocab_body:0,vocab_weather:0,vocab_travel:0,vocab_adjectives:0,vocab_phrases:0}};
+function saveStats(){localStorage.setItem("frenchStats6",JSON.stringify(stats))}
+
+// Mastery system - tracks how well user knows each item (0-3 levels)
+// 0 = never seen/wrong, 1 = seen once, 2 = correct once, 3 = mastered (correct 3+ times)
+function getMastery(key){return stats.mastery[key]||0}
+function updateMastery(key,correct){
+  var current=getMastery(key);
+  if(correct){stats.mastery[key]=Math.min(3,current+1)}
+  else{stats.mastery[key]=Math.max(0,current-1)}
+  saveStats();
+}
+
+// Calculate level based on mastery, not just XP
+function calculateSkillMastery(skill){
+  var keys=Object.keys(stats.mastery).filter(function(k){return k.indexOf(skill)===0});
+  if(keys.length===0)return 0;
+  var total=keys.reduce(function(sum,k){return sum+stats.mastery[k]},0);
+  return Math.round((total/(keys.length*3))*100);
+}
+var currentView="home";
+var app=document.getElementById("app");
+var modal=document.getElementById("modal");
+var verbFilter="all";
+
+// Calculate level
+function getLevel(){
+  // Calculate mastery score - weighted by skill importance
+  var masteredItems=Object.keys(stats.mastery).filter(function(k){return stats.mastery[k]>=3}).length;
+  var totalItems=Object.keys(stats.mastery).length||1;
+  var masteryPercent=(masteredItems/Math.max(totalItems,50))*100; // Need at least 50 items mastered for fair calc
+  
+  // Level requirements: A1=20% mastery of basics, A2=40%, B1=60%, B2=80%
+  // Also require minimum XP as time investment
+  if(stats.xp<100||masteryPercent<15) return {name:"A1",next:100,color:"level-a1",masteryReq:15,mastered:masteredItems};
+  if(stats.xp<300||masteryPercent<35) return {name:"A2",next:300,color:"level-a2",masteryReq:35,mastered:masteredItems};
+  if(stats.xp<700||masteryPercent<55) return {name:"B1",next:700,color:"level-b1",masteryReq:55,mastered:masteredItems};
+  if(stats.xp<1500||masteryPercent<75) return {name:"B2",next:1500,color:"level-b2",masteryReq:75,mastered:masteredItems};
+  return {name:"B2+",next:9999,color:"level-b2",masteryReq:90,mastered:masteredItems};
+}
+
+// NAV
+document.querySelectorAll(".nav-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active")});
+    btn.classList.add("active");
+    currentView=btn.getAttribute("data-view");
+    render();
+  });
+});
+
+function navigate(view){
+  document.querySelectorAll(".nav-btn").forEach(function(b){
+    b.classList.toggle("active",b.getAttribute("data-view")===view);
+  });
+  currentView=view;
+  render();
+}
+
+function render(){
+  if(currentView==="home")renderHome();
+  else if(currentView==="verbs")renderVerbs();
+  else if(currentView==="vocab")renderVocab();
+  else if(currentView==="grammar")renderGrammar();
+  else if(currentView==="stats")renderStats();
+}
+
+function renderHome(){
+  var level=getLevel();
+  var vocabCount=getAllVocab().length;
+  var progress=Math.min(100,Math.round((stats.xp/level.next)*100));
+  app.innerHTML='<div class="header"><div><div class="title">French Mastery</div><div class="subtitle">Bienvenue! Ready to learn?</div></div><div class="badge '+level.color+'">'+level.name+'</div></div>'+
+  '<div class="stats-detail" style="margin-bottom:20px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Progress to '+level.name+'</span><span>'+stats.xp+'/'+level.next+' XP</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:'+progress+'%"></div></div></div>'+
+  '<div class="stats-row"><div class="stat-box"><div class="stat-value">'+stats.xp+'</div><div class="stat-label">Total XP</div></div><div class="stat-box"><div class="stat-value">'+stats.streak+'</div><div class="stat-label">Day Streak</div></div><div class="stat-box"><div class="stat-value">'+(stats.practiced>0?Math.round(stats.correct/stats.practiced*100):0)+'%</div><div class="stat-label">Accuracy</div></div></div>'+
+  '<div class="section-title">Study</div>'+
+  '<div class="cards"><div class="card" onclick="navigate(\'verbs\')"><div class="card-icon">🔄</div><div class="card-title">Verbs</div><div class="card-count">'+VERBS.length+' verbs · 4 tenses</div></div><div class="card" onclick="navigate(\'vocab\')"><div class="card-icon">📚</div><div class="card-title">Vocabulary</div><div class="card-count">'+vocabCount+' words · '+Object.keys(VOCAB).length+' topics</div></div><div class="card" onclick="navigate(\'grammar\')"><div class="card-icon">📖</div><div class="card-title">Grammar</div><div class="card-count">'+GRAMMAR.length+' lessons · A1-B2</div></div><div class="card" onclick="navigate(\'stats\')"><div class="card-icon">📊</div><div class="card-title">Statistics</div><div class="card-count">Track progress</div></div></div>'+
+  '<div class="section-title">Quick Practice</div>'+
+  '<div class="cards"><div class="card" onclick="startVerbQuiz()"><div class="card-icon">✏️</div><div class="card-title">Verb Quiz</div><div class="card-count">+10 XP per correct</div></div><div class="card" onclick="startVocabQuiz()"><div class="card-icon">🎯</div><div class="card-title">Vocab Quiz</div><div class="card-count">+10 XP per correct</div></div><div class="card" onclick="startFlashcards()"><div class="card-icon">🎴</div><div class="card-title">Flashcards</div><div class="card-count">+5 XP per known</div></div><div class="card" onclick="startMixed()"><div class="card-icon">🎲</div><div class="card-title">Mixed Quiz</div><div class="card-count">Random challenge</div></div></div>';
+}
+
+function renderVerbs(){
+  app.innerHTML='<div class="header"><div><div class="title">Verbs</div><div class="subtitle">'+VERBS.length+' verbs with all tenses</div></div></div>'+
+  '<input class="search" id="verbSearch" placeholder="Search verbs..." oninput="renderVerbList()">'+
+  '<div class="filters"><button class="filter '+(verbFilter==="all"?"active":"")+'" onclick="verbFilter=\'all\';renderVerbList()">All</button><button class="filter '+(verbFilter==="irregular"?"active":"")+'" onclick="verbFilter=\'irregular\';renderVerbList()">Irregular</button><button class="filter '+(verbFilter==="er"?"active":"")+'" onclick="verbFilter=\'er\';renderVerbList()">-ER</button><button class="filter '+(verbFilter==="ir"?"active":"")+'" onclick="verbFilter=\'ir\';renderVerbList()">-IR</button><button class="filter '+(verbFilter==="re"?"active":"")+'" onclick="verbFilter=\'re\';renderVerbList()">-RE</button></div>'+
+  '<div class="list" id="verbList"></div>';
+  renderVerbList();
+}
+
+function renderVerbList(){
+  var searchEl=document.getElementById("verbSearch");
+  var search=searchEl?searchEl.value.toLowerCase():"";
+  var list=document.getElementById("verbList");
+  var filtered=VERBS.filter(function(v){
+    var matchSearch=v.verb.toLowerCase().indexOf(search)>=0||v.translation.toLowerCase().indexOf(search)>=0;
+    var matchFilter=verbFilter==="all"||v.group===verbFilter;
+    return matchSearch&&matchFilter;
+  });
+  var html="";
+  filtered.slice(0,100).forEach(function(v){
+    html+='<div class="list-item" onclick="showVerb(\''+v.verb+'\')"><div><div class="list-item-title">'+v.verb+'</div><div class="list-item-sub">'+v.translation+'</div></div><span class="tag tag-'+v.group+'">'+v.group+'</span></div>';
+  });
+  if(filtered.length>100)html+='<p style="color:var(--dim);text-align:center;padding:16px">Showing 100 of '+filtered.length+'</p>';
+  list.innerHTML=html;
+}
+
+function showVerb(verb){
+  var v=VERBS.find(function(x){return x.verb===verb});
+  if(!v)return;
+  stats.verbsStudied++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">'+v.verb+'</div><div class="modal-sub">'+v.translation+' <span class="tag tag-'+v.group+'">'+v.group+'</span></div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="tabs" id="tenseTabs"><button class="tab active" onclick="showTense(\''+verb+'\',\'present\',this)">Present</button><button class="tab" onclick="showTense(\''+verb+'\',\'passe\',this)">Passé C.</button><button class="tab" onclick="showTense(\''+verb+'\',\'imparfait\',this)">Imparfait</button><button class="tab" onclick="showTense(\''+verb+'\',\'futur\',this)">Futur</button></div><div id="conjTable">'+renderConj(v,"present")+'</div></div>');
+}
+
+function showTense(verb,tense,btn){
+  var v=VERBS.find(function(x){return x.verb===verb});
+  document.querySelectorAll("#tenseTabs .tab").forEach(function(t){t.classList.remove("active")});
+  btn.classList.add("active");
+  document.getElementById("conjTable").innerHTML=renderConj(v,tense);
+}
+
+function renderConj(v,tense){
+  var t=v[tense];
+  if(!t)return '<p style="color:var(--dim);text-align:center;padding:20px">Not available</p>';
+  var rows=[["je",t.je],["tu",t.tu],["il/elle",t.il],["nous",t.nous],["vous",t.vous],["ils/elles",t.ils]];
+  var html='<table class="conj-table">';
+  rows.forEach(function(r){html+='<tr><td class="pronoun">'+r[0]+'</td><td class="form">'+r[1]+'</td></tr>'});
+  return html+'</table>';
+}
+
+function renderVocab(){
+  var cats=Object.keys(VOCAB);
+  var html='<div class="header"><div><div class="title">Vocabulary</div><div class="subtitle">'+getAllVocab().length+' words across '+cats.length+' categories</div></div></div>'+
+  '<input class="search" placeholder="Search words..." oninput="searchVocab(this.value)">'+
+  '<div class="cards" id="vocabCards">';
+  cats.forEach(function(c){
+    html+='<div class="card" onclick="showCategory(\''+c+'\')"><div class="card-icon">'+VOCAB[c].icon+'</div><div class="card-title">'+VOCAB[c].name+'</div><div class="card-count">'+VOCAB[c].words.length+' words</div></div>';
+  });
+  app.innerHTML=html+'</div>';
+}
+
+function searchVocab(q){
+  if(q.length<2){renderVocab();return}
+  var results=getAllVocab().filter(function(w){return w.fr.toLowerCase().indexOf(q.toLowerCase())>=0||w.en.toLowerCase().indexOf(q.toLowerCase())>=0});
+  var html='<div style="grid-column:1/-1">';
+  if(results.length){
+    results.slice(0,50).forEach(function(w){
+      html+='<div class="word-card"><div><div class="word-french">'+w.fr+'</div><div class="word-english">'+w.en+'</div></div><button class="speak-btn" onclick="speak(\''+w.fr+'\')">🔊</button></div>';
+    });
+  }else{html+='<p style="color:var(--dim);text-align:center;padding:20px">No results</p>'}
+  document.getElementById("vocabCards").innerHTML=html+'</div>';
+}
+
+function showCategory(cat){
+  var c=VOCAB[cat];
+  stats.vocabStudied++;saveStats();
+  var html='<div class="modal-header"><div><div class="modal-title">'+c.icon+' '+c.name+'</div><div class="modal-sub">'+c.words.length+' words</div></div><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body">';
+  c.words.forEach(function(w){
+    html+='<div class="word-card"><div><div class="word-french">'+w.fr+'</div><div class="word-english">'+w.en+'</div></div><button class="speak-btn" onclick="speak(\''+w.fr+'\')">🔊</button></div>';
+  });
+  openModal(html+'</div>');
+}
+
+function speak(text){if("speechSynthesis"in window){var u=new SpeechSynthesisUtterance(text);u.lang="fr-FR";u.rate=0.8;speechSynthesis.speak(u)}}
+
+function renderGrammar(){
+  var levels=["A1","A2","B1","B2"];
+  var html='<div class="header"><div><div class="title">Grammar</div><div class="subtitle">'+GRAMMAR.length+' lessons from A1 to B2</div></div></div><div class="list">';
+  levels.forEach(function(lvl){
+    var topics=GRAMMAR.filter(function(g){return g.level===lvl});
+    if(topics.length){
+      html+='<div class="section-title" style="margin-top:16px">'+lvl+' Level</div>';
+      topics.forEach(function(g){
+        html+='<div class="list-item" onclick="showGrammar(\''+g.id+'\')"><div><div class="list-item-title">'+g.title+'</div><div class="list-item-sub">'+g.level+'</div></div><span class="tag '+g.level.toLowerCase()+'">'+g.level+'</span></div>';
+      });
+    }
+  });
+  app.innerHTML=html+'</div>';
+}
+
+function showGrammar(id){
+  var g=GRAMMAR.find(function(x){return x.id===id});
+  if(!g)return;
+  stats.grammarStudied++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">'+g.title+'</div><div class="modal-sub">Level: '+g.level+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body">'+g.content+'</div>');
+}
+
+function renderStats(){
+  var level=getLevel();
+  var acc=stats.practiced>0?Math.round(stats.correct/stats.practiced*100):0;
+  var progress=Math.min(100,Math.round((stats.xp/level.next)*100));
+  var totalWords=getAllVocab().length;
+  var totalVerbs=VERBS.length;
+  var totalGrammar=GRAMMAR.length;
+  
+  // Calculate mastery stats
+  var masteryKeys=Object.keys(stats.mastery);
+  var mastered=masteryKeys.filter(function(k){return stats.mastery[k]>=3}).length;
+  var learning=masteryKeys.filter(function(k){return stats.mastery[k]>0&&stats.mastery[k]<3}).length;
+  var unseen=masteryKeys.filter(function(k){return stats.mastery[k]===0}).length;
+  
+  // Skill breakdown
+  var verbMastery=calculateSkillMastery("verb_");
+  var vocabMastery=calculateSkillMastery("vocab_");
+  
+  app.innerHTML='<div class="header"><div><div class="title">Statistics</div><div class="subtitle">Track your mastery</div></div></div>'+
+  
+  // Level section with mastery requirement
+  '<div class="stats-detail"><h3>🎯 Current Level</h3><div style="display:flex;align-items:center;gap:12px;margin:16px 0"><span class="badge '+level.color+'" style="font-size:24px;padding:12px 24px">'+level.name+'</span><div><div style="font-size:14px;color:var(--dim)">'+stats.xp+' / '+level.next+' XP</div><div style="font-size:12px;color:var(--dim)">'+mastered+' items mastered</div></div></div><div class="stats-bar"><div class="stats-bar-fill" style="width:'+progress+'%"></div></div><p style="font-size:12px;color:var(--dim);margin-top:8px">Level up requires both XP and consistent mastery of content</p></div>'+
+  
+  // Mastery breakdown
+  '<div class="stats-detail"><h3>🧠 Mastery Progress</h3><div class="stats-grid"><div class="stats-item" style="background:rgba(29,209,161,0.2)"><div class="stats-item-value" style="color:#1dd1a1">'+mastered+'</div><div class="stats-item-label">Mastered (3+ correct)</div></div><div class="stats-item" style="background:rgba(254,202,87,0.2)"><div class="stats-item-value" style="color:#feca57">'+learning+'</div><div class="stats-item-label">Learning</div></div><div class="stats-item"><div class="stats-item-value">'+stats.practiced+'</div><div class="stats-item-label">Total Attempts</div></div><div class="stats-item"><div class="stats-item-value">'+acc+'%</div><div class="stats-item-label">Accuracy</div></div></div></div>'+
+  
+  // Skill mastery
+  '<div class="stats-detail"><h3>📊 Skill Mastery</h3>'+
+  '<div class="skill-card"><div class="skill-header"><span class="skill-name">🔄 Verbs</span><span class="skill-level">'+verbMastery+'%</span></div><div class="skill-progress"><div class="skill-progress-fill" style="width:'+verbMastery+'%"></div></div></div>'+
+  '<div class="skill-card"><div class="skill-header"><span class="skill-name">📚 Vocabulary</span><span class="skill-level">'+vocabMastery+'%</span></div><div class="skill-progress"><div class="skill-progress-fill" style="width:'+vocabMastery+'%"></div></div></div>'+
+  '</div>'+
+  
+  // Practice activity
+  '<div class="stats-detail"><h3>📈 Activity</h3><div class="stats-grid"><div class="stats-item"><div class="stats-item-value">'+stats.xp+'</div><div class="stats-item-label">Total XP</div></div><div class="stats-item"><div class="stats-item-value">'+stats.quizzesTaken+'</div><div class="stats-item-label">Quizzes</div></div><div class="stats-item"><div class="stats-item-value">'+stats.verbsStudied+'</div><div class="stats-item-label">Verbs Studied</div></div><div class="stats-item"><div class="stats-item-value">'+stats.vocabStudied+'</div><div class="stats-item-label">Vocab Studied</div></div></div></div>'+
+  
+  // Content overview
+  '<div class="stats-detail"><h3>📖 Content Available</h3><p style="color:var(--dim);font-size:14px;margin-bottom:12px">'+totalVerbs+' verbs · '+totalWords+' vocabulary words · '+totalGrammar+' grammar lessons</p><button class="btn btn-outline btn-sm" onclick="openPracticeSetup()" style="width:auto">Start Custom Practice</button></div>'+
+  
+  '<button class="btn btn-outline" style="margin-top:12px" onclick="resetProgress()">Reset All Progress</button>';
+}
+
+function resetProgress(){if(confirm("Reset all progress? This cannot be undone.")){localStorage.removeItem("frenchStats6");stats={xp:0,streak:0,practiced:0,correct:0,verbsStudied:0,vocabStudied:0,grammarStudied:0,quizzesTaken:0,lastPractice:null,mastery:{},skillScores:{}};render()}}
+
+// COMPREHENSIVE PRACTICE SYSTEM
+var practiceSettings={
+  type:"verbs",
+  // Verb settings
+  tenses:["present"],
+  verbGroups:["irregular","er","ir","re"],
+  commonVerbsOnly:false,
+  // Vocab settings
+  categories:["greetings"],
+  // Mode settings
+  mode:"quiz",
+  direction:"both", // frToEn, enToFr, both
+  count:10,
+  // Speaking/listening
+  audioEnabled:true
+};
+
+// Common verbs for beginners (most frequently used)
+var COMMON_VERBS=["être","avoir","aller","faire","dire","pouvoir","vouloir","savoir","voir","venir","prendre","devoir","falloir","parler","donner","passer","regarder","aimer","trouver","mettre","demander","rester","laisser","penser","croire","connaître","partir","sentir","tenir","comprendre"];
+
+function openPracticeSetup(){
+  var verbCount=getFilteredVerbs().length;
+  var vocabCount=getFilteredVocab().length;
+  
+  var html='<div class="modal-header"><div><div class="modal-title">⚙️ Practice Setup</div><div class="modal-sub">Build your perfect study session</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body">'+
+  
+  // STEP 1: What to practice
+  '<div class="practice-section"><label class="practice-label">1. What do you want to practice?</label>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option'+(practiceSettings.type==="verbs"?" selected":"")+'" onclick="setPracticeType(\'verbs\')">🔄 Verbs</div>'+
+  '<div class="practice-option'+(practiceSettings.type==="vocab"?" selected":"")+'" onclick="setPracticeType(\'vocab\')">📚 Vocabulary</div>'+
+  '<div class="practice-option'+(practiceSettings.type==="sentences"?" selected":"")+'" onclick="setPracticeType(\'sentences\')">💬 Sentences</div>'+
+  '<div class="practice-option'+(practiceSettings.type==="listening"?" selected":"")+'" onclick="setPracticeType(\'listening\')">👂 Listening</div>'+
+  '<div class="practice-option'+(practiceSettings.type==="speaking"?" selected":"")+'" onclick="setPracticeType(\'speaking\')">🗣️ Speaking</div>'+
+  '<div class="practice-option'+(practiceSettings.type==="weak"?" selected":"")+'" onclick="setPracticeType(\'weak\')">🎯 Weak Areas</div>'+
+  '</div></div>'+
+  
+  // VERB OPTIONS
+  (practiceSettings.type==="verbs"?
+  '<div class="practice-section"><label class="practice-label">2. Which verb groups? <span style="color:var(--lt)">('+verbCount+' verbs selected)</span></label>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option'+(practiceSettings.verbGroups.indexOf("irregular")>=0?" selected":"")+'" onclick="toggleVerbGroup(\'irregular\')">⭐ Irregular (essential)</div>'+
+  '<div class="practice-option'+(practiceSettings.verbGroups.indexOf("er")>=0?" selected":"")+'" onclick="toggleVerbGroup(\'er\')">-ER verbs</div>'+
+  '<div class="practice-option'+(practiceSettings.verbGroups.indexOf("ir")>=0?" selected":"")+'" onclick="toggleVerbGroup(\'ir\')">-IR verbs</div>'+
+  '<div class="practice-option'+(practiceSettings.verbGroups.indexOf("re")>=0?" selected":"")+'" onclick="toggleVerbGroup(\'re\')">-RE verbs</div>'+
+  '</div>'+
+  '<div style="margin-top:12px"><div class="practice-option'+(practiceSettings.commonVerbsOnly?" selected":"")+'" onclick="toggleCommonVerbs()" style="display:inline-flex;align-items:center;gap:8px">🔥 Focus on 30 most common verbs only</div></div></div>'+
+  
+  '<div class="practice-section"><label class="practice-label">3. Which tenses?</label>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option'+(practiceSettings.tenses.indexOf("present")>=0?" selected":"")+'" onclick="toggleTense(\'present\')">Present <span style="opacity:0.6">(A1)</span></div>'+
+  '<div class="practice-option'+(practiceSettings.tenses.indexOf("passe")>=0?" selected":"")+'" onclick="toggleTense(\'passe\')">Passé Composé <span style="opacity:0.6">(A2)</span></div>'+
+  '<div class="practice-option'+(practiceSettings.tenses.indexOf("imparfait")>=0?" selected":"")+'" onclick="toggleTense(\'imparfait\')">Imparfait <span style="opacity:0.6">(A2)</span></div>'+
+  '<div class="practice-option'+(practiceSettings.tenses.indexOf("futur")>=0?" selected":"")+'" onclick="toggleTense(\'futur\')">Futur <span style="opacity:0.6">(A2)</span></div>'+
+  '</div></div>':"")+
+  
+  // VOCAB OPTIONS
+  (practiceSettings.type==="vocab"?
+  '<div class="practice-section"><label class="practice-label">2. Which categories? <span style="color:var(--lt)">('+vocabCount+' words selected)</span></label>'+
+  '<div style="margin-bottom:12px"><button class="btn btn-sm btn-outline" onclick="selectAllCategories()" style="margin-right:8px">Select All</button><button class="btn btn-sm btn-outline" onclick="selectNoCategories()">Clear All</button></div>'+
+  '<div class="practice-options" style="max-height:200px;overflow-y:auto">'+
+  Object.keys(VOCAB).map(function(c){
+    var catMastery=calculateCategoryMastery(c);
+    return '<div class="practice-option'+(practiceSettings.categories.indexOf(c)>=0?" selected":"")+'" onclick="toggleCategory(\''+c+'\')" style="justify-content:space-between"><span>'+VOCAB[c].icon+' '+VOCAB[c].name+' <span style="opacity:0.5">('+VOCAB[c].words.length+')</span></span><span style="font-size:11px;color:var(--lt)">'+catMastery+'%</span></div>'
+  }).join('')+
+  '</div></div>'+
+  
+  '<div class="practice-section"><label class="practice-label">3. Translation direction</label>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option'+(practiceSettings.direction==="frToEn"?" selected":"")+'" onclick="setDirection(\'frToEn\')">🇫🇷→🇬🇧 French to English</div>'+
+  '<div class="practice-option'+(practiceSettings.direction==="enToFr"?" selected":"")+'" onclick="setDirection(\'enToFr\')">🇬🇧→🇫🇷 English to French</div>'+
+  '<div class="practice-option'+(practiceSettings.direction==="both"?" selected":"")+'" onclick="setDirection(\'both\')">🔄 Both directions</div>'+
+  '</div></div>':"")+
+  
+  // SENTENCE BUILDER OPTIONS
+  (practiceSettings.type==="sentences"?
+  '<div class="practice-section"><label class="practice-label">2. Sentence practice builds real conversation skills</label>'+
+  '<p style="color:var(--dim);font-size:13px;margin-bottom:12px">Practice forming complete sentences using vocabulary and grammar you\'ve learned.</p>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option selected">📝 Fill in the blank</div>'+
+  '<div class="practice-option">🔀 Word order</div>'+
+  '<div class="practice-option">💭 Translate sentence</div>'+
+  '</div></div>':"")+
+  
+  // LISTENING OPTIONS  
+  (practiceSettings.type==="listening"?
+  '<div class="practice-section"><label class="practice-label">2. Listening comprehension</label>'+
+  '<p style="color:var(--dim);font-size:13px;margin-bottom:12px">Hear French words and phrases, then identify or type what you heard.</p>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option'+(practiceSettings.categories.indexOf("greetings")>=0?" selected":"")+'" onclick="toggleCategory(\'greetings\')">👋 Greetings</div>'+
+  '<div class="practice-option'+(practiceSettings.categories.indexOf("numbers")>=0?" selected":"")+'" onclick="toggleCategory(\'numbers\')">🔢 Numbers</div>'+
+  '<div class="practice-option'+(practiceSettings.categories.indexOf("phrases")>=0?" selected":"")+'" onclick="toggleCategory(\'phrases\')">💬 Phrases</div>'+
+  '<div class="practice-option'+(practiceSettings.categories.indexOf("food")>=0?" selected":"")+'" onclick="toggleCategory(\'food\')">🍽️ Food</div>'+
+  '</div></div>':"")+
+  
+  // SPEAKING OPTIONS
+  (practiceSettings.type==="speaking"?
+  '<div class="practice-section"><label class="practice-label">2. Speaking practice</label>'+
+  '<p style="color:var(--dim);font-size:13px;margin-bottom:12px">See a prompt, speak your answer out loud, then reveal the correct response to compare.</p>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option selected">🗣️ Pronunciation drills</div>'+
+  '<div class="practice-option">💬 Response practice</div>'+
+  '<div class="practice-option">🎭 Role play scenarios</div>'+
+  '</div></div>':"")+
+  
+  // PRACTICE MODE (for quiz types)
+  ((practiceSettings.type==="verbs"||practiceSettings.type==="vocab"||practiceSettings.type==="weak")?
+  '<div class="practice-section"><label class="practice-label">'+(practiceSettings.type==="verbs"?"4":"4")+'. How do you want to practice?</label>'+
+  '<div class="cards" style="margin-bottom:0">'+
+  '<div class="mode-card'+(practiceSettings.mode==="quiz"?" selected":"")+'" onclick="setPracticeMode(\'quiz\')"><div class="mode-icon">✏️</div><div class="mode-title">Quiz</div><div class="mode-desc">Multiple choice</div></div>'+
+  '<div class="mode-card'+(practiceSettings.mode==="flashcards"?" selected":"")+'" onclick="setPracticeMode(\'flashcards\')"><div class="mode-icon">🎴</div><div class="mode-title">Flashcards</div><div class="mode-desc">Flip to reveal</div></div>'+
+  '<div class="mode-card'+(practiceSettings.mode==="typing"?" selected":"")+'" onclick="setPracticeMode(\'typing\')"><div class="mode-icon">⌨️</div><div class="mode-title">Type Answer</div><div class="mode-desc">More challenging</div></div>'+
+  '<div class="mode-card'+(practiceSettings.mode==="listen"?" selected":"")+'" onclick="setPracticeMode(\'listen\')"><div class="mode-icon">👂</div><div class="mode-title">Listen & Type</div><div class="mode-desc">Audio + typing</div></div>'+
+  '</div></div>':"")+
+  
+  // COUNT
+  '<div class="practice-section"><label class="practice-label">Number of items</label>'+
+  '<div class="practice-options">'+
+  '<div class="practice-option'+(practiceSettings.count===5?" selected":"")+'" onclick="setPracticeCount(5)">5 <span style="opacity:0.5">Quick</span></div>'+
+  '<div class="practice-option'+(practiceSettings.count===10?" selected":"")+'" onclick="setPracticeCount(10)">10</div>'+
+  '<div class="practice-option'+(practiceSettings.count===20?" selected":"")+'" onclick="setPracticeCount(20)">20</div>'+
+  '<div class="practice-option'+(practiceSettings.count===50?" selected":"")+'" onclick="setPracticeCount(50)">50 <span style="opacity:0.5">Deep dive</span></div>'+
+  '</div></div>'+
+  
+  // Audio toggle
+  '<div class="practice-section"><label class="practice-label" style="display:flex;align-items:center;gap:12px;cursor:pointer" onclick="toggleAudio()"><span>🔊 Audio pronunciation</span><span class="practice-option'+(practiceSettings.audioEnabled?" selected":"")+'" style="padding:6px 12px">'+(practiceSettings.audioEnabled?"ON":"OFF")+'</span></label></div>'+
+  
+  // Start button
+  '<button class="btn" style="margin-top:8px" onclick="startCustomPractice()">🚀 Start Practice</button>'+
+  '</div>';
+  openModal(html);
+}
+
+// Helper functions
+function getFilteredVerbs(){
+  var verbs=VERBS.filter(function(v){return practiceSettings.verbGroups.indexOf(v.group)>=0});
+  if(practiceSettings.commonVerbsOnly){
+    verbs=verbs.filter(function(v){return COMMON_VERBS.indexOf(v.verb)>=0});
+  }
+  return verbs;
+}
+
+function getFilteredVocab(){
+  var words=[];
+  practiceSettings.categories.forEach(function(cat){
+    if(VOCAB[cat])words=words.concat(VOCAB[cat].words);
+  });
+  return words;
+}
+
+function calculateCategoryMastery(cat){
+  if(!VOCAB[cat])return 0;
+  var words=VOCAB[cat].words;
+  var mastered=0;
+  words.forEach(function(w){
+    var key="vocab_"+cat+"_"+w.fr.replace(/[^a-zA-Z]/g,"");
+    if(getMastery(key)>=3)mastered++;
+  });
+  return Math.round((mastered/words.length)*100);
+}
+
+function setPracticeType(type){
+  practiceSettings.type=type;
+  openPracticeSetup();
+}
+
+function toggleVerbGroup(group){
+  var idx=practiceSettings.verbGroups.indexOf(group);
+  if(idx>=0)practiceSettings.verbGroups.splice(idx,1);
+  else practiceSettings.verbGroups.push(group);
+  if(practiceSettings.verbGroups.length===0)practiceSettings.verbGroups=["irregular"];
+  openPracticeSetup();
+}
+
+function toggleCommonVerbs(){
+  practiceSettings.commonVerbsOnly=!practiceSettings.commonVerbsOnly;
+  openPracticeSetup();
+}
+
+function toggleTense(tense){
+  var idx=practiceSettings.tenses.indexOf(tense);
+  if(idx>=0)practiceSettings.tenses.splice(idx,1);
+  else practiceSettings.tenses.push(tense);
+  if(practiceSettings.tenses.length===0)practiceSettings.tenses=["present"];
+  openPracticeSetup();
+}
+
+function toggleCategory(cat){
+  var idx=practiceSettings.categories.indexOf(cat);
+  if(idx>=0)practiceSettings.categories.splice(idx,1);
+  else practiceSettings.categories.push(cat);
+  if(practiceSettings.categories.length===0)practiceSettings.categories=["greetings"];
+  openPracticeSetup();
+}
+
+function selectAllCategories(){
+  practiceSettings.categories=Object.keys(VOCAB);
+  openPracticeSetup();
+}
+
+function selectNoCategories(){
+  practiceSettings.categories=["greetings"];
+  openPracticeSetup();
+}
+
+function setDirection(dir){
+  practiceSettings.direction=dir;
+  openPracticeSetup();
+}
+
+function setPracticeMode(mode){
+  practiceSettings.mode=mode;
+  openPracticeSetup();
+}
+
+function setPracticeCount(count){
+  practiceSettings.count=count;
+  openPracticeSetup();
+}
+
+function toggleAudio(){
+  practiceSettings.audioEnabled=!practiceSettings.audioEnabled;
+  openPracticeSetup();
+}
+
+function setPracticeCount(count){
+  practiceSettings.count=count;
+  openPracticeSetup();
+}
+
+function startCustomPractice(){
+  closeModal();
+  if(practiceSettings.type==="listening"){
+    startListeningPractice();
+  }else if(practiceSettings.type==="speaking"){
+    startSpeakingPractice();
+  }else if(practiceSettings.type==="sentences"){
+    startSentencePractice();
+  }else if(practiceSettings.mode==="flashcards"){
+    startCustomFlashcards();
+  }else if(practiceSettings.mode==="typing"||practiceSettings.mode==="listen"){
+    startTypingPractice();
+  }else if(practiceSettings.mode==="spaced"){
+    startSpacedReview();
+  }else{
+    if(practiceSettings.type==="verbs")startVerbQuizCustom();
+    else if(practiceSettings.type==="vocab")startVocabQuizCustom();
+    else startWeakAreasQuiz();
+  }
+}
+
+// VERB QUIZ with full customization
+function startVerbQuiz(){openPracticeSetup();practiceSettings.type="verbs";}
+function startVerbQuizCustom(){
+  var questions=[];
+  var pronouns=["je","tu","il/elle","nous","vous","ils/elles"];
+  var keys=["je","tu","il","nous","vous","ils"];
+  var tenseNames={present:"Présent",imparfait:"Imparfait",futur:"Futur",passe:"Passé Composé"};
+  var filteredVerbs=getFilteredVerbs();
+  var attempts=0;
+  while(questions.length<practiceSettings.count&&attempts<300){
+    attempts++;
+    var v=filteredVerbs[Math.floor(Math.random()*filteredVerbs.length)];
+    var tense=practiceSettings.tenses[Math.floor(Math.random()*practiceSettings.tenses.length)];
+    var pIdx=Math.floor(Math.random()*6);
+    if(v&&v[tense]&&v[tense][keys[pIdx]]){
+      var correct=v[tense][keys[pIdx]];
+      var options=[correct];
+      var masteryKey="verb_"+v.verb+"_"+tense+"_"+keys[pIdx];
+      while(options.length<4){
+        var wv=filteredVerbs[Math.floor(Math.random()*filteredVerbs.length)];
+        if(wv&&wv[tense]&&wv[tense][keys[pIdx]]){
+          var wrong=wv[tense][keys[pIdx]];
+          if(options.indexOf(wrong)<0)options.push(wrong);
+        }
+      }
+      questions.push({q:"<strong>"+v.verb+"</strong> ("+tenseNames[tense]+")<br>"+pronouns[pIdx]+" ...?",correct:correct,options:shuffle(options),masteryKey:masteryKey,verb:v.verb,tense:tense,audio:v.verb});
+    }
+  }
+  if(questions.length)runQuiz(questions,"Verb Quiz · "+filteredVerbs.length+" verbs · "+practiceSettings.tenses.join(", "));
+}
+
+// VOCAB QUIZ with direction control
+function startVocabQuiz(){openPracticeSetup();practiceSettings.type="vocab";}
+function startVocabQuizCustom(){
+  var words=getFilteredVocab().map(function(w,i,arr){
+    // Find category
+    var cat="";
+    Object.keys(VOCAB).forEach(function(c){
+      VOCAB[c].words.forEach(function(vw){if(vw.fr===w.fr)cat=c});
+    });
+    return {fr:w.fr,en:w.en,category:cat};
+  });
+  words=shuffle(words);
+  var questions=[];
+  for(var i=0;i<Math.min(practiceSettings.count,words.length);i++){
+    var w=words[i];
+    // Direction control
+    var frToEn=practiceSettings.direction==="frToEn"?true:practiceSettings.direction==="enToFr"?false:Math.random()>0.5;
+    var masteryKey="vocab_"+w.category+"_"+w.fr.replace(/[^a-zA-Z]/g,"");
+    var options=[frToEn?w.en:w.fr];
+    while(options.length<4){
+      var wrong=words[Math.floor(Math.random()*words.length)];
+      var opt=frToEn?wrong.en:wrong.fr;
+      if(options.indexOf(opt)<0)options.push(opt);
+    }
+    questions.push({q:frToEn?"What does <strong>"+w.fr+"</strong> mean?":"Comment dit-on <strong>"+w.en+"</strong>?",correct:frToEn?w.en:w.fr,options:shuffle(options),masteryKey:masteryKey,word:w,audio:w.fr});
+  }
+  runQuiz(questions,"Vocabulary Quiz · "+words.length+" words");
+}
+
+// LISTENING PRACTICE - Hear audio, identify word
+function startListeningPractice(){
+  var words=getFilteredVocab().map(function(w){
+    var cat="";
+    Object.keys(VOCAB).forEach(function(c){VOCAB[c].words.forEach(function(vw){if(vw.fr===w.fr)cat=c})});
+    return {fr:w.fr,en:w.en,category:cat};
+  });
+  words=shuffle(words).slice(0,practiceSettings.count);
+  runListeningQuiz(words);
+}
+
+var listenItems=[],listenCurrent=0,listenScore=0;
+function runListeningQuiz(items){
+  listenItems=items;listenCurrent=0;listenScore=0;
+  showListeningQuestion();
+}
+function showListeningQuestion(){
+  if(listenCurrent>=listenItems.length){finishListeningQuiz();return}
+  var item=listenItems[listenCurrent];
+  var options=[item.en];
+  var all=getFilteredVocab();
+  while(options.length<4){
+    var wrong=all[Math.floor(Math.random()*all.length)];
+    if(options.indexOf(wrong.en)<0)options.push(wrong.en);
+  }
+  options=shuffle(options);
+  openModal('<div class="modal-header"><div><div class="modal-title">👂 Listening Practice</div><div class="modal-sub">'+(listenCurrent+1)+' of '+listenItems.length+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:'+(listenCurrent/listenItems.length*100)+'%"></div></div>'+
+  '<div style="text-align:center;margin-bottom:24px"><button class="btn" onclick="speak(\''+item.fr.replace(/'/g,"\\'")+'\')" style="font-size:48px;width:100px;height:100px;border-radius:50%;padding:0">🔊</button><p style="color:var(--dim);margin-top:12px">Click to hear the word</p></div>'+
+  '<div class="quiz-question">What does this word mean?</div>'+
+  '<div class="quiz-options">'+options.map(function(o,i){return '<button class="quiz-option" id="lopt'+i+'" onclick="checkListening('+i+',\''+item.en.replace(/'/g,"\\'")+'\')">'+o+'</button>'}).join('')+'</div></div>');
+  // Auto-play
+  setTimeout(function(){speak(item.fr)},300);
+}
+function checkListening(idx,correct){
+  var btn=document.getElementById("lopt"+idx);
+  var isCorrect=btn.textContent===correct;
+  btn.classList.add(isCorrect?"correct":"wrong");
+  var item=listenItems[listenCurrent];
+  var key="vocab_"+item.category+"_"+item.fr.replace(/[^a-zA-Z]/g,"");
+  updateMastery(key,isCorrect);
+  if(isCorrect)listenScore++;
+  if(!isCorrect){document.querySelectorAll(".quiz-option").forEach(function(b){if(b.textContent===correct)b.classList.add("correct")})}
+  document.querySelectorAll(".quiz-option").forEach(function(b){b.disabled=true});
+  setTimeout(function(){listenCurrent++;showListeningQuestion()},1200);
+}
+function finishListeningQuiz(){
+  var pct=Math.round(listenScore/listenItems.length*100);
+  var xp=listenScore*12;
+  stats.xp+=xp;stats.practiced+=listenItems.length;stats.correct+=listenScore;stats.quizzesTaken++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">👂 Listening Complete!</div></div><button class="modal-close" onclick="closeModal();render()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-result"><div class="quiz-score">'+pct+'%</div><p style="margin:16px 0">'+listenScore+'/'+listenItems.length+' correct</p><p style="color:var(--lt)">+'+xp+' XP</p><button class="btn" style="margin-top:24px" onclick="closeModal();render()">Continue</button></div></div>');
+}
+
+// SPEAKING PRACTICE - See prompt, speak aloud, reveal answer
+function startSpeakingPractice(){
+  var items=[];
+  // Mix of vocab and common phrases
+  getFilteredVocab().slice(0,30).forEach(function(w){items.push({type:"vocab",prompt:"Say this in French:",en:w.en,fr:w.fr})});
+  // Add response prompts
+  var prompts=[
+    {prompt:"How do you greet someone in the morning?",fr:"Bonjour!"},
+    {prompt:"How do you say 'thank you very much'?",fr:"Merci beaucoup!"},
+    {prompt:"How do you ask 'How are you?' (formal)",fr:"Comment allez-vous?"},
+    {prompt:"How do you say 'My name is...'?",fr:"Je m'appelle..."},
+    {prompt:"How do you say 'I don't understand'?",fr:"Je ne comprends pas."},
+    {prompt:"How do you say 'Please'?",fr:"S'il vous plaît"},
+    {prompt:"How do you say 'Excuse me'?",fr:"Excusez-moi"},
+    {prompt:"How do you ask 'Where is...?'",fr:"Où est...?"},
+    {prompt:"How do you say 'I would like...'?",fr:"Je voudrais..."},
+    {prompt:"How do you say 'Goodbye'?",fr:"Au revoir!"}
+  ];
+  prompts.forEach(function(p){items.push({type:"speaking",prompt:p.prompt,fr:p.fr})});
+  items=shuffle(items).slice(0,practiceSettings.count);
+  speakItems=items;speakCurrent=0;speakScore=0;
+  showSpeakingCard();
+}
+
+var speakItems=[],speakCurrent=0,speakScore=0;
+function showSpeakingCard(){
+  if(speakCurrent>=speakItems.length){finishSpeakingPractice();return}
+  var item=speakItems[speakCurrent];
+  var promptText=item.type==="vocab"?"Say in French: <strong>"+item.en+"</strong>":item.prompt;
+  openModal('<div class="modal-header"><div><div class="modal-title">🗣️ Speaking Practice</div><div class="modal-sub">'+(speakCurrent+1)+' of '+speakItems.length+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:'+(speakCurrent/speakItems.length*100)+'%"></div></div>'+
+  '<div style="text-align:center;padding:20px"><div class="quiz-question">'+promptText+'</div>'+
+  '<p style="color:var(--dim);margin:20px 0">🎤 Say your answer out loud, then reveal to check</p>'+
+  '<div id="speakAnswer" style="display:none;background:var(--el);border-radius:var(--r);padding:20px;margin:20px 0">'+
+  '<div style="font-size:24px;font-weight:600;margin-bottom:12px">'+item.fr+'</div>'+
+  '<button class="speak-btn" onclick="speak(\''+item.fr.replace(/'/g,"\\'")+'\')" style="font-size:24px;width:50px;height:50px">🔊</button>'+
+  '</div>'+
+  '<button class="btn" id="revealBtn" onclick="document.getElementById(\'speakAnswer\').style.display=\'block\';document.getElementById(\'revealBtn\').style.display=\'none\';document.getElementById(\'rateDiv\').style.display=\'flex\'">Reveal Answer</button>'+
+  '<div id="rateDiv" style="display:none;gap:12px;margin-top:16px;justify-content:center">'+
+  '<button class="btn btn-outline" onclick="rateSpeaking(false)" style="flex:1">❌ Needs work</button>'+
+  '<button class="btn" onclick="rateSpeaking(true)" style="flex:1">✅ Got it!</button>'+
+  '</div></div></div>');
+}
+function rateSpeaking(correct){
+  if(correct)speakScore++;
+  speakCurrent++;
+  showSpeakingCard();
+}
+function finishSpeakingPractice(){
+  var pct=Math.round(speakScore/speakItems.length*100);
+  var xp=speakScore*8;
+  stats.xp+=xp;stats.practiced+=speakItems.length;stats.correct+=speakScore;stats.quizzesTaken++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">🗣️ Speaking Complete!</div></div><button class="modal-close" onclick="closeModal();render()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-result"><div class="quiz-score">'+pct+'%</div><p style="margin:16px 0">'+speakScore+'/'+speakItems.length+' you felt confident on</p><p style="color:var(--lt)">+'+xp+' XP</p><p style="color:var(--dim);margin-top:12px;font-size:13px">Pro tip: Practice speaking every day, even if just for 5 minutes!</p><button class="btn" style="margin-top:24px" onclick="closeModal();render()">Continue</button></div></div>');
+}
+
+// SENTENCE PRACTICE - Build real sentences
+function startSentencePractice(){
+  var sentences=[
+    {fr:"Je m'appelle ___.",en:"My name is ___.",blank:"m'appelle",hint:"reflexive verb for 'to be called'"},
+    {fr:"J'___ vingt ans.",en:"I am 20 years old.",blank:"ai",hint:"verb 'avoir'"},
+    {fr:"Je ___ français.",en:"I speak French.",blank:"parle",hint:"verb 'parler'"},
+    {fr:"Il ___ beau aujourd'hui.",en:"It's nice weather today.",blank:"fait",hint:"verb 'faire'"},
+    {fr:"Je ___ faim.",en:"I am hungry.",blank:"ai",hint:"verb 'avoir'"},
+    {fr:"Où ___ la gare?",en:"Where is the station?",blank:"est",hint:"verb 'être'"},
+    {fr:"Je ___ aller au cinéma.",en:"I want to go to the cinema.",blank:"veux",hint:"verb 'vouloir'"},
+    {fr:"Il ___ partir.",en:"He must leave.",blank:"doit",hint:"verb 'devoir'"},
+    {fr:"Nous ___ en France.",en:"We live in France.",blank:"habitons",hint:"verb 'habiter'"},
+    {fr:"Elle ___ le piano.",en:"She plays the piano.",blank:"joue",hint:"verb 'jouer'"},
+    {fr:"Ils ___ au restaurant.",en:"They are going to the restaurant.",blank:"vont",hint:"verb 'aller'"},
+    {fr:"Tu ___ du café?",en:"Do you want some coffee?",blank:"veux",hint:"verb 'vouloir'"},
+    {fr:"Je ne ___ pas.",en:"I don't know.",blank:"sais",hint:"verb 'savoir'"},
+    {fr:"Elle ___ très jolie.",en:"She is very pretty.",blank:"est",hint:"verb 'être'"},
+    {fr:"Nous ___ mangé au restaurant.",en:"We ate at the restaurant.",blank:"avons",hint:"passé composé with avoir"}
+  ];
+  sentences=shuffle(sentences).slice(0,practiceSettings.count);
+  sentenceItems=sentences;sentenceCurrent=0;sentenceScore=0;
+  showSentenceQuestion();
+}
+
+var sentenceItems=[],sentenceCurrent=0,sentenceScore=0;
+function showSentenceQuestion(){
+  if(sentenceCurrent>=sentenceItems.length){finishSentencePractice();return}
+  var item=sentenceItems[sentenceCurrent];
+  var display=item.fr.replace(item.blank,"______");
+  openModal('<div class="modal-header"><div><div class="modal-title">💬 Complete the Sentence</div><div class="modal-sub">'+(sentenceCurrent+1)+' of '+sentenceItems.length+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:'+(sentenceCurrent/sentenceItems.length*100)+'%"></div></div>'+
+  '<div class="quiz-question" style="font-size:22px">'+display+'</div>'+
+  '<p style="color:var(--dim);text-align:center;margin-bottom:8px">'+item.en+'</p>'+
+  '<p style="color:var(--lt);text-align:center;font-size:13px;margin-bottom:20px">💡 Hint: '+item.hint+'</p>'+
+  '<input class="search" id="sentenceInput" placeholder="Type the missing word..." style="text-align:center;font-size:18px" onkeypress="if(event.key===\'Enter\')checkSentence(\''+item.blank+'\')" autofocus>'+
+  '<button class="btn" style="margin-top:12px" onclick="checkSentence(\''+item.blank+'\')">Check</button></div>');
+  setTimeout(function(){var inp=document.getElementById("sentenceInput");if(inp)inp.focus()},100);
+}
+function checkSentence(correct){
+  var input=document.getElementById("sentenceInput").value.trim().toLowerCase();
+  var isCorrect=input===correct.toLowerCase();
+  if(isCorrect)sentenceScore++;
+  stats.practiced++;if(isCorrect)stats.correct++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">'+(isCorrect?"✅ Correct!":"❌ Not quite")+'</div></div></div>'+
+  '<div class="modal-body" style="text-align:center"><p style="font-size:20px;margin-bottom:8px">'+correct+'</p>'+
+  '<p style="color:var(--dim);margin-bottom:12px">'+sentenceItems[sentenceCurrent].fr+'</p>'+
+  (practiceSettings.audioEnabled?'<button class="speak-btn" onclick="speak(\''+sentenceItems[sentenceCurrent].fr.replace(/'/g,"\\'")+'\')" style="font-size:24px;margin-bottom:16px">🔊</button>':'')+
+  '<button class="btn" onclick="sentenceCurrent++;showSentenceQuestion()">Next</button></div>');
+}
+function finishSentencePractice(){
+  var pct=Math.round(sentenceScore/sentenceItems.length*100);
+  var xp=sentenceScore*15;
+  stats.xp+=xp;stats.quizzesTaken++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">💬 Sentences Complete!</div></div><button class="modal-close" onclick="closeModal();render()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-result"><div class="quiz-score">'+pct+'%</div><p style="margin:16px 0">'+sentenceScore+'/'+sentenceItems.length+' correct</p><p style="color:var(--lt)">+'+xp+' XP</p><button class="btn" style="margin-top:24px" onclick="closeModal();render()">Continue</button></div></div>');
+}
+
+// WEAK AREAS - prioritize items with low mastery
+function startWeakAreasQuiz(){
+  var weakItems=[];
+  // Get vocab items with mastery < 3
+  Object.keys(VOCAB).forEach(function(cat){
+    VOCAB[cat].words.forEach(function(w){
+      var key="vocab_"+cat+"_"+w.fr.replace(/[^a-zA-Z]/g,"");
+      var m=getMastery(key);
+      if(m<3)weakItems.push({type:"vocab",word:w,category:cat,key:key,mastery:m});
+    });
+  });
+  // Get verb items with mastery < 3
+  var keys=["je","tu","il","nous","vous","ils"];
+  var tenses=["present","passe","imparfait","futur"];
+  VERBS.slice(0,30).forEach(function(v){// Focus on common verbs
+    tenses.forEach(function(t){
+      keys.forEach(function(k){
+        if(v[t]&&v[t][k]){
+          var key="verb_"+v.verb+"_"+t+"_"+k;
+          var m=getMastery(key);
+          if(m<3)weakItems.push({type:"verb",verb:v,tense:t,pronoun:k,key:key,mastery:m});
+        }
+      });
+    });
+  });
+  // Sort by mastery (lowest first) and take top items
+  weakItems.sort(function(a,b){return a.mastery-b.mastery});
+  var questions=[];
+  var pronounLabels={je:"je",tu:"tu",il:"il/elle",nous:"nous",vous:"vous",ils:"ils/elles"};
+  var tenseNames={present:"Présent",imparfait:"Imparfait",futur:"Futur",passe:"Passé Composé"};
+  for(var i=0;i<Math.min(practiceSettings.count,weakItems.length);i++){
+    var item=weakItems[i];
+    if(item.type==="vocab"){
+      var frToEn=Math.random()>0.5;
+      var options=[frToEn?item.word.en:item.word.fr];
+      var all=getAllVocab();
+      while(options.length<4){
+        var wrong=all[Math.floor(Math.random()*all.length)];
+        var opt=frToEn?wrong.en:wrong.fr;
+        if(options.indexOf(opt)<0)options.push(opt);
+      }
+      questions.push({q:frToEn?"What does <strong>"+item.word.fr+"</strong> mean?":"How do you say <strong>"+item.word.en+"</strong>?",correct:frToEn?item.word.en:item.word.fr,options:shuffle(options),masteryKey:item.key});
+    }else{
+      var correct=item.verb[item.tense][item.pronoun];
+      var options=[correct];
+      while(options.length<4){
+        var wv=VERBS[Math.floor(Math.random()*VERBS.length)];
+        if(wv[item.tense]&&wv[item.tense][item.pronoun]){
+          var wrong=wv[item.tense][item.pronoun];
+          if(options.indexOf(wrong)<0)options.push(wrong);
+        }
+      }
+      questions.push({q:"<strong>"+item.verb.verb+"</strong> ("+tenseNames[item.tense]+")<br>"+pronounLabels[item.pronoun]+" ...?",correct:correct,options:shuffle(options),masteryKey:item.key});
+    }
+  }
+  if(questions.length)runQuiz(questions,"Weak Areas Review");
+  else{openModal('<div class="modal-header"><div><div class="modal-title">🎉 Great job!</div></div><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><p style="text-align:center">You\'ve mastered everything! Try practicing other content.</p></div>');}
+}
+
+// SPACED REVIEW - based on mastery levels
+function startSpacedReview(){
+  practiceSettings.type="weak";
+  startWeakAreasQuiz();
+}
+
+// TYPING PRACTICE
+function startTypingPractice(){
+  var items=[];
+  if(practiceSettings.type==="vocab"){
+    practiceSettings.categories.forEach(function(cat){
+      if(VOCAB[cat])VOCAB[cat].words.forEach(function(w){items.push({fr:w.fr,en:w.en,category:cat,key:"vocab_"+cat+"_"+w.fr.replace(/[^a-zA-Z]/g,"")})});
+    });
+  }else{
+    VERBS.slice(0,20).forEach(function(v){items.push({fr:v.verb,en:v.translation,key:"verb_"+v.verb})});
+  }
+  items=shuffle(items).slice(0,practiceSettings.count);
+  runTypingQuiz(items);
+}
+
+var typingItems=[],typingCurrent=0,typingScore=0;
+function runTypingQuiz(items){
+  typingItems=items;typingCurrent=0;typingScore=0;
+  showTypingQuestion();
+}
+function showTypingQuestion(){
+  if(typingCurrent>=typingItems.length){finishTypingQuiz();return}
+  var item=typingItems[typingCurrent];
+  var frToEn=Math.random()>0.5;
+  openModal('<div class="modal-header"><div><div class="modal-title">Type the Answer</div><div class="modal-sub">'+(typingCurrent+1)+' of '+typingItems.length+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:'+(typingCurrent/typingItems.length*100)+'%"></div></div>'+
+  '<div class="quiz-question">'+(frToEn?"Translate to English:<br><strong>"+item.fr+"</strong>":"Translate to French:<br><strong>"+item.en+"</strong>")+'</div>'+
+  '<input class="search" id="typingInput" placeholder="Type your answer..." style="text-align:center;font-size:18px" onkeypress="if(event.key===\'Enter\')checkTyping(\''+(frToEn?item.en:item.fr).replace(/'/g,"\\'")+'\')" autofocus>'+
+  '<button class="btn" style="margin-top:12px" onclick="checkTyping(\''+(frToEn?item.en:item.fr).replace(/'/g,"\\'")+'\')"">Check</button></div>');
+  setTimeout(function(){var inp=document.getElementById("typingInput");if(inp)inp.focus()},100);
+}
+function checkTyping(correct){
+  var input=document.getElementById("typingInput").value.trim().toLowerCase();
+  var isCorrect=input===correct.toLowerCase()||input===correct.toLowerCase().replace(/['"]/g,"");
+  var item=typingItems[typingCurrent];
+  updateMastery(item.key,isCorrect);
+  if(isCorrect){typingScore++;stats.correct++}
+  stats.practiced++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">'+(isCorrect?"✅ Correct!":"❌ Not quite")+'</div></div></div>'+
+  '<div class="modal-body" style="text-align:center"><p style="font-size:18px;margin-bottom:12px">'+correct+'</p>'+(isCorrect?'':'<p style="color:var(--dim)">You typed: '+input+'</p>')+
+  '<button class="btn" style="margin-top:16px" onclick="typingCurrent++;showTypingQuestion()">Next</button></div>');
+}
+function finishTypingQuiz(){
+  var pct=Math.round(typingScore/typingItems.length*100);
+  var xp=typingScore*15;// Typing gives more XP
+  stats.xp+=xp;stats.quizzesTaken++;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">Practice Complete!</div></div><button class="modal-close" onclick="closeModal();render()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-result"><div class="quiz-score">'+pct+'%</div><p style="margin:16px 0;font-size:18px">'+typingScore+' out of '+typingItems.length+' correct</p><p style="color:var(--lt);font-size:20px">+'+xp+' XP earned!</p><button class="btn" style="margin-top:24px" onclick="closeModal();render()">Continue</button></div></div>');
+}
+
+// FLASHCARDS with customization
+function startFlashcards(){openPracticeSetup();practiceSettings.mode="flashcards";}
+function startCustomFlashcards(){
+  var items=[];
+  if(practiceSettings.type==="vocab"){
+    practiceSettings.categories.forEach(function(cat){
+      if(VOCAB[cat])VOCAB[cat].words.forEach(function(w){items.push({fr:w.fr,en:w.en,key:"vocab_"+cat+"_"+w.fr.replace(/[^a-zA-Z]/g,"")})});
+    });
+  }else{
+    VERBS.forEach(function(v){items.push({fr:v.verb,en:v.translation,key:"verb_"+v.verb})});
+  }
+  fcCards=shuffle(items).slice(0,practiceSettings.count);
+  fcCurrent=0;fcKnown=0;
+  showFlashcard();
+}
+
+function startMixed(){
+  practiceSettings.type=Math.random()>0.5?"verbs":"vocab";
+  practiceSettings.mode="quiz";
+  startCustomPractice();
+}
+
+function shuffle(arr){return arr.slice().sort(function(){return Math.random()-0.5})}
+
+var quizCurrent=0,quizScore=0,quizQuestions=[],quizTitle="";
+function runQuiz(questions,title){
+  quizQuestions=questions;
+  quizTitle=title;
+  quizCurrent=0;
+  quizScore=0;
+  stats.quizzesTaken++;saveStats();
+  showQuestion();
+}
+
+function showQuestion(){
+  if(quizCurrent>=quizQuestions.length){finishQuiz();return}
+  var q=quizQuestions[quizCurrent];
+  var html='<div class="modal-header"><div><div class="modal-title">'+quizTitle+'</div><div class="modal-sub">Question '+(quizCurrent+1)+' of '+quizQuestions.length+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:'+(quizCurrent/quizQuestions.length*100)+'%"></div></div>'+
+  '<div class="quiz-question">'+q.q+'</div><div class="quiz-options">';
+  q.options.forEach(function(o,i){
+    html+='<button class="quiz-option" id="opt'+i+'" onclick="checkAnswer('+i+')">'+o+'</button>';
+  });
+  openModal(html+'</div></div>');
+}
+
+function checkAnswer(idx){
+  var q=quizQuestions[quizCurrent];
+  var btn=document.getElementById("opt"+idx);
+  var answer=q.options[idx];
+  var isCorrect=answer===q.correct;
+  btn.classList.add(isCorrect?"correct":"wrong");
+  // Track mastery
+  if(q.masteryKey)updateMastery(q.masteryKey,isCorrect);
+  if(!isCorrect){
+    document.querySelectorAll(".quiz-option").forEach(function(b){
+      if(b.textContent===q.correct)b.classList.add("correct");
+    });
+  }else{quizScore++}
+  document.querySelectorAll(".quiz-option").forEach(function(b){b.disabled=true});
+  setTimeout(function(){quizCurrent++;showQuestion()},1000);
+}
+
+function finishQuiz(){
+  var pct=Math.round(quizScore/quizQuestions.length*100);
+  var xp=quizScore*10;
+  stats.xp+=xp;stats.practiced+=quizQuestions.length;stats.correct+=quizScore;saveStats();
+  openModal('<div class="modal-header"><div><div class="modal-title">Quiz Complete!</div></div><button class="modal-close" onclick="closeModal();render()">×</button></div>'+
+  '<div class="modal-body"><div class="quiz-result"><div class="quiz-score">'+pct+'%</div><p style="margin:16px 0;font-size:18px">'+quizScore+' out of '+quizQuestions.length+' correct</p><p style="color:var(--lt);font-size:20px">+'+xp+' XP earned!</p><button class="btn" style="margin-top:24px" onclick="closeModal();render()">Continue</button></div></div>');
+}
+
+// FLASHCARDS
+var fcCards=[],fcCurrent=0,fcKnown=0;
+function startFlashcards(){
+  fcCards=shuffle(getAllVocab().slice()).slice(0,20);
+  fcCurrent=0;
+  fcKnown=0;
+  showFlashcard();
+}
+
+function showFlashcard(){
+  if(fcCurrent>=fcCards.length){
+    var xp=fcKnown*5;
+    stats.xp+=xp;stats.practiced+=fcCards.length;stats.correct+=fcKnown;saveStats();
+    openModal('<div class="modal-header"><div><div class="modal-title">Flashcards Complete!</div></div><button class="modal-close" onclick="closeModal();render()">×</button></div>'+
+    '<div class="modal-body"><div class="quiz-result"><div class="quiz-score">'+fcKnown+'/'+fcCards.length+'</div><p style="margin:16px 0">Words you knew</p><p style="color:var(--lt);font-size:20px">+'+xp+' XP earned!</p><button class="btn" style="margin-top:24px" onclick="closeModal();render()">Continue</button></div></div>');
+    return;
+  }
+  var c=fcCards[fcCurrent];
+  openModal('<div class="modal-header"><div><div class="modal-title">Flashcards</div><div class="modal-sub">'+(fcCurrent+1)+' of '+fcCards.length+'</div></div><button class="modal-close" onclick="closeModal()">×</button></div>'+
+  '<div class="modal-body"><div class="flashcard-container"><div class="flashcard" id="fc" onclick="this.classList.toggle(\'flipped\')"><div class="flashcard-face"><div class="flashcard-word">'+c.fr+'</div><div class="flashcard-hint">Tap to reveal</div></div><div class="flashcard-face flashcard-back"><div class="flashcard-word">'+c.en+'</div></div></div></div>'+
+  '<div class="flashcard-btns"><button class="btn btn-outline" onclick="fcNext(false)">❌ Learning</button><button class="btn" onclick="fcNext(true)">✓ Knew it</button></div></div>');
+}
+
+function fcNext(knew){
+  var card=fcCards[fcCurrent];
+  if(card&&card.key)updateMastery(card.key,knew);
+  if(knew)fcKnown++;
+  fcCurrent++;
+  showFlashcard();
+}
+
+// MODAL
+function openModal(content){modal.innerHTML='<div class="modal">'+content+'</div>';modal.classList.add("open")}
+function closeModal(){modal.classList.remove("open")}
+modal.addEventListener("click",function(e){if(e.target===modal)closeModal()});
+
+// INIT
+render();
+</script>
+</body>
+</html>
